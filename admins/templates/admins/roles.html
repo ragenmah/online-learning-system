@@ -1,0 +1,78 @@
+{% extends 'admins/base.html' %} {% block title %}Dashboard - Roles{% endblock title %} {% block content %}
+
+
+
+<div class="container-fluid">
+    <div class="card card-body p-2 ">
+      <h5 class="pt-2 "> <i class="far fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Roles</h5>
+    </div>
+
+    <a class="btn btn-success btn-icon-split mt-4" role="button" href="{% url 'admins:add_roles' %}">
+        <span class="text-white-50 icon">
+            <i class="fas fa-plus"></i>
+        </span>
+        <span class="text-white text">Add Roles</span>
+    </a>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-dismissible {{ message.tags }} mt-3">
+              <button type="button" class="close" data-dismiss="alert">
+              ×
+              </button>
+              <strong>{{message}}</strong>
+            </div>
+         {% endfor %}
+        {% endif %}
+    <div class="table-responsive mt-4">
+      <table class="table table-sm table-bordered table-striped shadow">
+<!--        <caption>List of roles</caption>-->
+          <thead>
+            <tr class="bg-primary text-white">
+              <th scope="col">ID</th>
+              <th scope="col">Role</th>
+              <th scope="col">Role Description</th>
+              <th scope="col text-align-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% if roles %}
+          {% for role in roles %}
+
+            <tr>
+              <th scope="row">{{role.id}}</th>
+              <td>{{role.role_title}}</td>
+              <td>{{role.role_description}}</td>
+              <td>
+                <div class="pull-right dropdown no-arrow justify-content-right">
+                    <button
+                      class="btn btn-link btn-sm dropdown-toggle"
+                      aria-expanded="false"
+                      data-toggle="dropdown"
+                      type="button"
+                    >
+                      <i class="fas fa-ellipsis-v "></i>
+                    </button>
+                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
+                      <a class="dropdown-item btn-success" href="{% url 'admins:edit_roles' id=role.id %}">
+                          <i class="fa fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                          &nbsp;Edit Role
+                      </a>
+                      <a class="dropdown-item" href="{% url 'admins:delete_roles' id=role.id %}">
+                          <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
+                          &nbsp;Delete Role
+                      </a>
+                    </div>
+                  </div>
+
+              </td>
+            </tr>
+            {% endfor %}
+              {% else %}
+          <tr ><td colspan="4">No roles has been added</td> </tr>
+              {% endif %}
+
+          </tbody>
+      </table>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,75 @@
+{% extends 'teachers/base.html' %} {% block title %}Courses{% endblock title %} {% block content %}
+
+<div class="container-fluid">
+    <div class="card shadow  card-body p-2 ">
+      <h5 class="pt-2 "><i class="fa fa-money fa-sm fa-fw mr-2 text-gray-400"></i>Fees</h5>
+    </div>
+
+     <a class="btn btn-primary btn-icon-split mt-4" role="button" href="{% url 'teachers:add_fees' %}">
+        <span class="text-white text ">Add Fees</span>
+    </a>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible {{ message.tags }} mt-3">
+          <button type="button" class="close" data-dismiss="alert">
+          ×
+          </button>
+          <strong>{{message}}</strong>
+        </div>
+     {% endfor %}
+    {% endif %}
+
+    <div class="table-responsive mt-4">
+      <table class="table table-sm table-bordered ">
+          <thead>
+            <tr class="bg-secondary text-white small">
+              <th scope="col">SN</th>
+              <th scope="col">Course title</th>
+              <th scope="col">Fees</th>
+              <th scope="col">Discount</th>
+              <th scope="col text-align-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% if durations %}
+          {% for duration in durations %}
+            <tr class="small">
+              <th scope="row">{{ forloop.counter }}</th>
+              <td class="max-lines">{{duration.course_id.course_title}}</td>
+              <td class="max-lines">{{duration.duration_time}}</td>
+              <td class="max-lines">{{duration.duration_time}}</td>
+              <td>
+                <div class="pull-right dropdown no-arrow justify-content-right">
+                    <button
+                      class="btn btn-link btn-sm dropdown-toggle"
+                      aria-expanded="false"
+                      data-toggle="dropdown"
+                      type="button"
+                    >
+                      <i class="fas fa-ellipsis-v "></i>
+                    </button>
+                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
+                      <a class="dropdown-item btn-success" href="{% url 'teachers:update_courses' id=duration.id %}">
+                          <i class="fa fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                          &nbsp;Edit Fees
+                      </a>
+                      <a class="dropdown-item" href="{% url 'teachers:delete_courses' id=duration.id %}">
+                          <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
+                          &nbsp;Delete Fees
+                      </a>
+                    </div>
+                  </div>
+              </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+              <tr>
+                  <td colspan="4" class="small">No fees has been added</td>
+              </tr>
+              {% endif %}
+          </tbody>
+      </table>
+    </div>
+</div>
+
+{% endblock content %}

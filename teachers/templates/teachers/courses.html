@@ -1,0 +1,78 @@
+{% extends 'teachers/base.html' %} {% block title %}Courses{% endblock title %} {% block content %}
+
+<div class="container-fluid">
+    <div class="card shadow  card-body p-2 ">
+      <h5 class="pt-2 "><i class="fa fa-book fa-sm fa-fw mr-2 text-gray-400"></i>Courses</h5>
+    </div>
+
+     <a class="btn btn-primary btn-icon-split mt-4" role="button" href="{% url 'teachers:add_courses' %}">
+        <span class="text-white-50 icon">
+            <i class="fas fa-plus fa-sm text-gray-400"></i>
+        </span>
+        <span class="text-white text small">Add Courses</span>
+    </a>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible {{ message.tags }} mt-3">
+          <button type="button" class="close" data-dismiss="alert">
+          ×
+          </button>
+          <strong>{{message}}</strong>
+        </div>
+     {% endfor %}
+    {% endif %}
+
+    <div class="table-responsive mt-4">
+      <table class="table table-sm table-bordered ">
+<!--        <caption>List of roles</caption>-->
+          <thead>
+            <tr class="bg-secondary text-white small">
+              <th scope="col">SN</th>
+              <th scope="col">Course title</th>
+              <th scope="col">Course Description</th>
+              <th scope="col text-align-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% if courses %}
+          {% for course in courses %}
+            <tr class="small">
+              <th scope="row">{{ forloop.counter }}</th>
+              <td class="max-lines">{{course.course_title}}</td>
+              <td class="max-lines">{{course.course_description}}</td>
+              <td>
+                <div class="pull-right dropdown no-arrow justify-content-right">
+                    <button
+                      class="btn btn-link btn-sm dropdown-toggle"
+                      aria-expanded="false"
+                      data-toggle="dropdown"
+                      type="button"
+                    >
+                      <i class="fas fa-ellipsis-v "></i>
+                    </button>
+                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
+                      <a class="dropdown-item btn-success" href="{% url 'teachers:update_courses' id=course.id %}">
+                          <i class="fa fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                          &nbsp;Edit Course
+                      </a>
+                      <a class="dropdown-item" href="{% url 'teachers:delete_courses' id=course.id %}">
+                          <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
+                          &nbsp;Delete Course
+                      </a>
+                    </div>
+                  </div>
+              </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+              <tr>
+                  <td colspan="4" class="small">No courses has been added</td>
+              </tr>
+              {% endif %}
+          </tbody>
+      </table>
+    </div>
+
+</div>
+
+{% endblock content %}

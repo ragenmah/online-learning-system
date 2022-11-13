@@ -1,0 +1,90 @@
+<!DOCTYPE html> {% load static %}
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Login - OLS</title>
+    <link rel="stylesheet" href="{% static 'accounts/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <style>
+        .btn-cancel{
+            border-radius:20px;
+            background-color:#F6C23D;
+        }
+        .header-image{
+                background-image: url('{% static 'accounts/assets/img/header-backimg2.jpg' %}');
+                 backdrop-filter: blur(2px);
+
+        }
+
+    </style>
+</head>
+
+<body class="bg-gradient-primary header-image" >
+<div class="container mt-2">
+     <div class="d-flex justify-content-center align-items-center mr-auto">
+        <div class="row justify-content-center">
+            <div class="card col-lg-9 shadow-lg o-hidden border-0 my-5">
+                <div class="card-body p-0">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                               <div class="p-5">
+                                   {% if messages %}
+                                  {% for message in messages %}
+                                    <div class="alert alert-dismissible {{ message.tags }} mt-3">
+                                      <button type="button" class="close" data-dismiss="alert">
+                                      ×
+                                      </button>
+                                      <strong>{{message}}</strong>
+                                    </div>
+                                 {% endfor %}
+                                {% endif %}
+                                    <div class="text-center">
+                                       <h2 class="text-dark mb-4 font-weight-bold">Log in</h2>
+                                    </div>
+                                     <h6 class="mb-4">
+                                            Welcome back, please enter your credentials to access your account.
+                                     </h6>
+                                    <form class="user" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+
+                                        <div class="form-group">
+                                             <input class="form-control form-control-user" type="email" placeholder="Email" name="email" autocomplete="off" required>
+                                        </div>
+                                        <div class="form-group">
+                                             <input class="form-control form-control-user" type="password" placeholder="Password" autocomplete="off" name="password" required>
+                                        </div>
+                                        <div class="form-group">
+        <!--                                            <div class="custom-control custom-checkbox small">-->
+        <!--                                                <div class="form-check">-->
+        <!--                                                    <input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1">-->
+        <!--                                                    <label class="form-check-label custom-control-label " for="formCheck-1">Remember Me</label>-->
+        <!--                                                </div>-->
+        <!--                                            </div>-->
+                                        </div><button class="btn btn-primary btn-block text-white btn-user" type="submit">Login</button>
+                                    </form>
+                                   <a class="btn btn-block text-white  btn-cancel small mt-2" href="/">
+                                       <div class="small p-1">Cancel</div>
+                                   </a>
+                                        <hr />
+        <!--                                    <div class="text-center"><a class="small" href="#">Forgot Password?</a></div>-->
+                                     <div class="text-center">
+                                         <a class="btn btn-block small" href="{% url 'accounts:student_signup' %}"><h6 class="small">Create an Account!</h6></a>
+                                     </div>
+                                  </div>
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="{% static 'accounts/js/theme.js' %}"></script>
+
+</body>
+
+</html>

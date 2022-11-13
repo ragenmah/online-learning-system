@@ -1,0 +1,53 @@
+{% extends 'students/base.html' %} {% block title %}Dashboard{% endblock title %} {% block content %}
+
+<div class="row justify-content-left mt-4">
+    <div class="col-lg-9">
+        <div class="card shadow  card-body p-4 " style="background-color:#042339" >
+            <h3 class="pt-2 text-white"><b>E-commerce Website Building with WordPress | Build your Online Shop</b></h3>
+             <div class="d-flex mt-3">
+              <p class="card-text  small pr-5">Enrolled: <span class="text-success">50</span></p>
+              <p class="card-text  small">Course Duration: <span class="text-success">2h 30m</span></p>
+             </div>
+            <p class="card-text  small">By: <span class="text-success">Ragen maharjan</span></p>
+        </div>
+
+        <div class="mt-5">
+            <h6>Course Description</h6>
+            <div class="card shadow  card-body p-8 " style="background-color:#042339" >
+               <p class="card-text small text-justify">This is a comprehensive course on using WordPress and woo-commerce to develop an eCommerce website for small and large businesses who want to go online to sell their products.</p>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <h6>About the instructors</h6>
+            <div class="card shadow  card-body p-8 " style="background-color:#042339" >
+                <div class="d-flex">
+                    <img  src="https://images.pexels.com/photos/4498366/pexels-photo-4498366.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" height="100" width="100" alt="teacher image">
+                      <div class="pl-3">
+                            <h6 class="card-text small text-success">Ragen Maharjan</h6>
+                            <h6 class="card-text  small">Computer Engineer</span></h6>
+                            <p class="card-text small text-justify mt-3 ">This is a comprehensive course on using WordPress and woo-commerce to develop an eCommerce website for small and large businesses who want to go online to sell their products.</p>
+                      </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 justify-content-center sidebar">
+           <div class="card shadow  card-body p-2 " style="background-color:#042339" >
+                    <img  src="https://images.pexels.com/photos/4498366/pexels-photo-4498366.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" height="160" alt="teacher image">
+                     <div class="card-body">
+                        <h6 class="card-title text-white "><b>Rs 500</b></h6>
+                         <button class="btn btn-primary py-0" type="button"> <h6 class="card-text small p-3">Enroll Now</h6></button>
+                         <hr>
+                         <h6 class="card-text">This course includes</h6>
+                         <hr>
+                        <p class="card-text small font-weight-light"> <i class="fas fa-check text-success mr-3"></i> <span >Study materials</span></p>
+
+                    </div>
+            </div>
+
+    </div>
+</div>
+
+{% endblock content %}

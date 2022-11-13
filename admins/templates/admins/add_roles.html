@@ -1,0 +1,36 @@
+{% extends 'admins/base.html' %}
+{% load static %}
+{% block title %}Add Roles{% endblock title %}
+{% block content %}
+<div class="container-fluid">
+     <div class="card card-body p-2 ">
+          <h5 class="pt-2 "> <i class="far fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Add Roles</h5>
+     </div>
+         {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-dismissible {{ message.tags }} mt-3">
+              <button type="button" class="close" data-dismiss="alert">
+              ×
+              </button>
+              <strong>{{message}}</strong>
+            </div>
+         {% endfor %}
+        {% endif %}
+
+    <form class="mt-4" method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <div class="form-group">
+          <label><b>Role Title</b></label>
+            {{form.role_title}}
+        </div>
+        <div class="form-group">
+          <label><b>Role Description</b></label>
+            {{form.role_description}}
+        </div>
+
+        <button type="submit" class="form-button btn btn-success">Confirm</button>
+
+    </form>
+</div>
+
+{% endblock content %}
