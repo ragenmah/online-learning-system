@@ -1,0 +1,114 @@
+{% extends 'teachers/base.html' %} {% block title %}Test questions{% endblock title %} {% block content %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="card shadow  card-body p-2 ">
+      <h5 class="pt-2 "><i class="fa fa-folder fa-sm fa-fw mr-2 text-gray-400"></i>Course test questions</h5>
+    </div>
+
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible {{ message.tags }} mt-3">
+          <button type="button" class="close" data-dismiss="alert">
+          ×
+          </button>
+          <strong>{{message}}</strong>
+        </div>
+     {% endfor %}
+    {% endif %}
+
+    {% if courses %}
+    {% for course in courses %}
+    <div class="card shadow mb-4 mt-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="text-primary m-0 font-weight-bold">{{course.course_title}}</h6>
+            <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"><a class="dropdown-item text-danger" href="">Delete Course</a></div>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="m-0 text-gray-500">Course code : {{course.code}}<br></p>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <!-- Start: Split Button Primary -->
+                    <a class="btn btn-primary btn-icon-split" role="button" href="{% url 'teachers:add_tests' courseId=course.id %}"><span
+                            class="text-white-50 icon"><i class="far fa-folder"></i></span><span
+                            class="text-white text">Add test</span>
+                    </a>
+                   <a class="btn btn-info btn-icon-split" role="button" href="{% url 'teachers:dashboard' %}"><span
+                            class="text-white-50 icon"><i class="far fa-times-circle"></i></span><span
+                            class="text-white text">Cancel</span>
+                    </a>
+                </div>
+                <div class="col text-right">
+                    <a class="btn btn-warning btn-icon-split" role="button" href=""><span
+                            class="text-white-50 icon"><i class="far fa-user"></i></span><span
+                            class="text-white text">Students</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+      <div>
+          <h6  class="text-primary m-0 font-weight-bold small">No courses is found</h6>
+      </div>
+      {% endif %}
+
+        <div class="card shadow  card-body p-2 mb-3">
+          <h5 class="pt-2 "><i class="fa fa-question fa-sm fa-fw mr-2 text-gray-400"></i>Questions</h5>
+        </div>
+        <div>
+        {% if tests %}
+        {% for test in tests %}
+        <div class="shadow card"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-4-{{resource.pk|slugify}}" href="#collapse-4-{{resource.pk|slugify}}" role="button">{{forloop.counter}}. {{test.question}}</a>
+            <div class="collapse" id="collapse-4-{{resource.pk|slugify}}">
+                <div class="card-body">
+                    <h1 style="font-size: 14px;font-weight: bold;" class="text-gray-500">Posted on: {{test.date_created|date:"M d, Y"}}</h1>
+
+                     <h1 style="font-size: 14px;font-weight: bold;" class="text-warning">Options </h1>
+                    <div class="p-2">
+
+                        <h1 style="font-size: 14px;font-weight: bold;" > {% if test.correct == '1'%}<span class="text-success">1. {{test.option1}}</span>{%else%}<span class="text-light">1. {{test.option1}}</span>{% endif %}</h1>
+                        <h1 style="font-size: 14px;font-weight: bold;" > {% if test.correct == '2'%}<span class="text-success">2. {{test.option2}}</span>{%else%}<span class="text-light">2. {{test.option2}}</span>{% endif %}</h1>
+                        <h1 style="font-size: 14px;font-weight: bold;" > {% if test.correct == '3' %}<span class="text-success">3. {{test.option3}}</span>{%else%}<span class="text-light">3. {{test.option3}}</span>{% endif %}</h1>
+                        <h1 style="font-size: 14px;font-weight: bold;" > {% if test.correct == '4'%}<span class="text-success">4. {{test.option4}}</span>{%else%}<span class="text-light">4. {{test.option4}}</span>{% endif %}</h1>
+                     {%if test.option5%}
+                        <h1 style="font-size: 14px;font-weight: bold;" > {% if test.correct == "5"%}<span class="text-success">5. {{test.option5}}</span>{%else%}<span class="text-light">5. {{test.option5}}</span>{% endif %}</h1>
+                     {% endif %}
+
+                    </div>
+
+                    <div class="row">
+                        <a class="btn btn-success btn-icon-split" role="button" href="{% url 'teachers:update_tests' id=test.id %}">
+                             <span class="text-white-50 icon">
+                                 <i class="fas fa-edit"></i>
+                             </span>
+                             <span class="text-white text">Edit Question</span></a>
+
+                        <div class="col text-right">
+                            <a class="btn btn-danger btn-icon-split" role="button" href="{% url 'teachers:delete_tests' id=test.id %}">
+                                <span class="text-white-50 icon">
+                                    <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    </span><span class="text-white text">Delete</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div>
+          <h6  class="text-primary m-0 font-weight-bold small">No test questions are added.</h6>
+        </div>
+        {% endif %}
+
+       <br>
+
+    </div>
+
+</div>
+
+{% endblock content %}

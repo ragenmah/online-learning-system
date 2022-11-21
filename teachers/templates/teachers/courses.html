@@ -1,4 +1,5 @@
 {% extends 'teachers/base.html' %} {% block title %}Courses{% endblock title %} {% block content %}
+{% load static %}
 
 <div class="container-fluid">
     <div class="card shadow  card-body p-2 ">
@@ -29,7 +30,8 @@
             <tr class="bg-secondary text-white small">
               <th scope="col">SN</th>
               <th scope="col">Course title</th>
-              <th scope="col">Course Description</th>
+<!--              <th scope="col">Course Description</th>-->
+                <th scope="col">Course Image</th>
               <th scope="col text-align-right">Actions</th>
             </tr>
           </thead>
@@ -37,11 +39,19 @@
           {% if courses %}
           {% for course in courses %}
             <tr class="small">
-              <th scope="row">{{ forloop.counter }}</th>
+              <td scope="row">{{ forloop.counter }}</td>
+
+
               <td class="max-lines">{{course.course_title}}</td>
-              <td class="max-lines">{{course.course_description}}</td>
+<!--              <td class="max-lines">{{course.course_description}}</td>-->
+              <td scope="row">
+                  {% if course.course_thumbnail %}
+                      <img src="{{ course.course_thumbnail.url }}" class="img-responsive" height="30" width="100" alt="No image" />
+                  {% endif %}
+              </td>
               <td>
                 <div class="pull-right dropdown no-arrow justify-content-right">
+
                     <button
                       class="btn btn-link btn-sm dropdown-toggle"
                       aria-expanded="false"

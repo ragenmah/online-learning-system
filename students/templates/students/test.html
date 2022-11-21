@@ -1,0 +1,60 @@
+{% extends 'students/base.html' %} {% block title %}Test{% endblock title %} {% block content %}
+
+<div >
+<!--    <div class="card shadow  card-body p-2 " >-->
+<!--      <h5 class="pt-2 text-white">Dashboard</h5>-->
+    <!--    </div>-->
+    {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-dismissible {{ message.tags }} mt-3">
+              <button type="button" class="close" data-dismiss="alert">
+              ×
+              </button>
+              <strong>{{message}}</strong>
+            </div>
+         {% endfor %}
+    {% endif %}
+
+<h5 class="text-gray-500">We have found <b>{{enroll_count}}</b> of your enrolled courses.</h5>
+<h6  class="text-gray-500">Select the courses to take a test.</h6>
+    <div class=" d-flex flex-wrap align-items-center mt-4">
+       <div class="row justify-content-left mt-4">
+           {% if enrolls %}
+           {% for enroll in enrolls %}
+                {% if enroll_count == 1 %}
+                   <div class="col-sm-6">
+
+                       {% elif enroll_count == 2 %}
+                   <div class="col-sm-5">
+                {% else %}
+                    <div class="col-sm-3">
+                {% endif %}
+                   <a href="{% url 'students:course_test' courseId=enroll.course_id.id %}">
+                      <div class="card mb-4 " style="height:300px; display:block;">
+                       {% if enroll.course_id.course_thumbnail %}
+                          <img class="card-img-top" src="{{ enroll.course_id.course_thumbnail.url }}" height="150" alt="Card image cap">
+                       {%else%}
+                          <img class="card-img-top" src="https://images.pexels.com/photos/4498366/pexels-photo-4498366.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" height="150" alt="Card image cap">
+                       {% endif %}
+                        <div class="card-body">
+                          <h6 class="card-title text-gray-400  max-lines">{{enroll.course_id.course_title}}</h6>
+                          <p class="card-text text-success small">{{enroll.course_id.user_id.name}}</p>
+                           <b class="text-gray-400">Rs 500</b>
+                        </div>
+                     </div>
+                   </a>
+              </div>
+          {% endfor %}
+          {% else %}
+              <div class="d-flex align-items-center justify-content-center flex-column">
+                 <label><b class="text-primary pt-4 pl-5">No Courses were enrolled yet.</b></label><br/>
+              </div>
+          {% endif %}
+
+      </div>
+
+    </div>
+
+
+
+{% endblock content %}

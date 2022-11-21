@@ -1,0 +1,102 @@
+{% extends 'students/base.html' %} {% block title %}{{courses.course_title}}{% endblock title %} {% block content %}
+{% load static %}
+  {% block style %}
+        <style>
+            .certificate{
+            background: url('{% static 'accounts/assets/img/certificate1.jpg' %}') no-repeat;
+              width: 100%;
+              height:650px;
+              border: 1px solid;
+              background-size:  100%  100%;
+            }
+            .certificate-body{
+            height:100%;
+            width: 100%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+            }
+        </style>
+    <!-- Body Block : END -->
+    {% endblock style %}
+<div >
+    {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-dismissible {{ message.tags }} mt-3">
+              <button type="button" class="close" data-dismiss="alert">
+              ×
+              </button>
+              <strong>{{message}}</strong>
+            </div>
+         {% endfor %}
+    {% endif %}
+
+    <div class="row justify-content-left mt-4">
+    <div class="col-lg-9">
+        <div class="card shadow  card-body p-4 " style="background-color:#042339" >
+            <h3 class="pt-2 text-gray-400 "><b>{{courses.course_title}}</b></h3>
+
+            <p class="card-text text-gray-400 small">By: <span class="text-success">{{courses.user_id.name}}</span></p>
+        </div>
+
+         <div class="container ">
+            <div class="card-columns" style="padding: 10px; margin: 20px;">
+                <div class="card"  style="width: 32rem; border:5px black solid">
+                    <img class="card-img-top" src="{% static 'accounts/assets/img/congratulations.png' %}" alt="Congratulations img">
+                    <div class="card d-body pl-5" >
+                        <h5 class="card-title">Score: {{score}}</h5>
+                        <p class="card-text">Percentage: {{percent}}%</p>
+                        <p class="card-text">Time Taken: {{time}} seconds</p>
+                        <p class="card-text">Correct answers: {{correct}}</p>
+                        <p class="card-text">Incorrect answers: {{wrong}}</p>
+                        <p class="card-text">Total questions: {{total}}</p>
+                        <h5>All the best for next test!</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class=" certificate" style="">
+           <div class="certificate-body">
+                <h5 style="margin-top:130px; font-size:0.7rem;">{{user.name}}</h5>
+               <h6 style="margin-top:50px; font-size:0.6rem;">{{courses.course_title}}</h6>
+               <h6 style="margin-top:35px; font-size:0.7em;">{{percent}}%</h6>
+               <h6  style="margin-top:80px;  font-size:0.7rem;">{{issue_date}}</h6>
+           </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="col-lg-3 justify-content-center sidebar">
+           <div class="card shadow  card-body p-2 " style="background-color:#042339" >
+               {% if courses.course_thumbnail %}
+                    <img  src="{{ courses.course_thumbnail.url }}" height="160" alt="teacher image">
+                {%else%}
+                    <img  src="https://images.pexels.com/photos/4498366/pexels-photo-4498366.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" height="160" alt="teacher image">
+               {% endif %}
+                     <div class="card-body">
+                           <h6 class="card-title text-success "><b><i class="fas fa-check text-success mr-3"></i> Rs 500 paid</b></h6>
+                             <a href="{% url 'students:course_enroll' id=courses.id %}">
+                             <form method="post"  action="{% url 'students:course_unroll' id=courses.id %}">
+                                      {% csrf_token %}
+                                      <button class="btn btn-primary py-0" type="submit">
+                                   <h6 class="card-text small p-3">Unroll</h6>
+                                 </button>
+                             </form>
+                              </a>
+                         <hr>
+                         <h6 class="card-text text-gray-400">This course includes</h6>
+                         <hr>
+                        <p class="card-text small font-weight-light text-gray-400"> <i class="fas fa-check text-success mr-3"></i> <span >Study materials</span></p>
+                    </div>
+            </div>
+    </div>
+</div>
+
+
+
+
+{% endblock content %}

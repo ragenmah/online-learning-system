@@ -58,38 +58,40 @@
     <!-- Start: break 4.0 --><br>
     <!-- End: break 4.0 -->
     <!-- Start: Dropdown Card -->
-
+    {% if courses_of_admins %}
+     {% for course in courses_of_admins %}
     <div class="card shadow mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="text-primary m-0 font-weight-bold">course name</h6>
+            <h6 class="text-primary m-0 font-weight-bold">{{course.course_title}}</h6>
             <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"><a class="dropdown-item text-danger" href="">Delete Classroom</a></div>
+                <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"><a class="dropdown-item text-danger" href="">Delete Course</a></div>
             </div>
         </div>
         <div class="card-body">
-            <p class="m-0">Classroom code : <br></p>
-            <!-- Start: break 4.0 --><br>
-            <!-- End: break 4.0 -->
+            <p class="m-0 text-gray-500">Course code : {{course.code}}<br></p>
+            <br>
             <div class="row">
                 <div class="col">
-                    <!-- Start: Split Button Primary -->
-                    <a class="btn btn-primary btn-icon-split" role="button" href=""><span
+                    <a class="btn btn-primary btn-icon-split" role="button" href="{% url 'teachers:course_resources' courseId=course.id %}"><span
                             class="text-white-50 icon"><i class="far fa-folder"></i></span><span
                             class="text-white text">Manage</span>
                     </a>
-                    <!-- End: Split Button Primary -->
                 </div>
                 <div class="col text-right">
-                    <!-- Start: Split Button Primary --><a class="btn btn-warning btn-icon-split" role="button" href=""><span
+                    <a class="btn btn-warning btn-icon-split" role="button" href="{% url 'teachers:view_student_by_course' course_id=course.id %}"><span
                             class="text-white-50 icon"><i class="far fa-user"></i></span><span
                             class="text-white text">Students</span></a>
-                    <!-- End: Split Button Primary -->
                 </div>
             </div>
         </div>
     </div>
-    <!-- End: Dropdown Card -->
-
+     {% endfor %}
+    {% else %}
+        <div class="d-flex align-items-center justify-content-center flex-column">
+           <label><b class="text-primary pt-4">No Courses are added.</b></label><br/>
+           <a href="{% url 'teachers:courses' %}" class="form-button btn btn-primary">Add Course</a>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock content %}

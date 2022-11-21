@@ -12,6 +12,7 @@ class UserForm(forms.ModelForm):
    class Meta:
         model = Users
         fields = "__all__"
+        exclude = ('profile_image', 'profile_description', 'current_position')
         widgets = {
                'name': forms.TextInput(attrs={'class': 'form-control form-control-user','placeholder': 'Full name', 'autocomplete':"off"},),
                'email': forms.EmailInput(attrs={'class': 'form-control form-control-user','placeholder': 'Email', 'autocomplete':"off"},),
@@ -22,5 +23,13 @@ class UserForm(forms.ModelForm):
              # 'password2': forms.PasswordInput(attrs={'class': 'form-control form-control-user','placeholder': 'Repeat Password'},)
         }
 
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = Users
+        exclude = ('user_role_id', 'password')
+        widgets = {
+                    'profile_description': forms.Textarea(attrs={'class': 'form-control', "placeholder": ""}),
+                     'current_position': forms.TextInput( attrs={'class': 'form-control form-control-user', 'placeholder': ''}, ),
 
+        }
 

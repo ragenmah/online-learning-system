@@ -13,8 +13,10 @@ from django.contrib import messages
 roles_std = Roles.objects.get(role_title='student').id
 roles_teacher = Roles.objects.get(role_title='teacher').id
 
+
 class IndexView(TemplateView):
     template_name = "accounts/index.html"
+
 
 def TeacherCreateView(request):
         form = UserForm()
@@ -52,6 +54,7 @@ def TeacherCreateView(request):
 
         return render(request, "accounts/teacher_signup.html",context)
 
+
 def StudentCreateView(request):
     form = UserForm()
     context = {'form': form}
@@ -86,6 +89,7 @@ def StudentCreateView(request):
             return redirect('students:dashboard')
 
     return render(request, "accounts/student_signup.html", context)
+
 
 # register users -> student and teacher ...this is not used
 def SaveUser(roles, request,context,urlName,redirectTo):
@@ -136,14 +140,17 @@ def LoginView(request):
             messages.success(request, 'Welcome ' + user.name)
 
             if roles.role_title == 'teacher':
+                request.session['teacher_login'] = roles_teacher
                 return redirect('teachers:dashboard')
             if roles.role_title == 'student':
+                request.session['student_login'] = roles_std
                 return redirect('students:dashboard')
             else:
                 return redirect('admins:dashboard')
         # else: pass
     context = {}
     return render(request, "accounts/login.html", context)
+
 
 def CreateAdmin():
     new = Users.objects.filter(email='admin@admin.com')
@@ -162,8 +169,13 @@ def CreateAdmin():
                      address=address, dob=dob, contact_no=contact_no, password=password)
         user.save()
 
+
 def LogoutView(request):
         del request.session['user_id']
         del request.session['roles_std']
         del request.session['roles_teacher']
+        if 'teacher_login' in request.session:
+            del request.session['teacher_login']
+        if 'student_login' in request.session:
+            del request.session['student_login']
         return redirect('/')

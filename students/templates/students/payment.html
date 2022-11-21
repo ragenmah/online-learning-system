@@ -1,0 +1,203 @@
+{% extends 'students/base.html' %} {% block title %}{{courses.course_title}}{% endblock title %} {% block content %}
+{% load static%}
+
+
+{% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-dismissible {{ message.tags }} mt-3">
+              <button type="button" class="close" data-dismiss="alert">
+              ×
+              </button>
+              <strong>{{message}}</strong>
+            </div>
+         {% endfor %}
+    {% endif %}
+
+<div class="row justify-content-left mt-4">
+    <div class="col-lg-9">
+        <div class="card shadow  card-body p-4 " style="background-color:#042339" >
+            <h3 class="pt-2 text-gray-400 "><b>{{courses.course_title}}</b></h3>
+             <div class="d-flex mt-3">
+              <p class="card-text text-gray-400 small pr-5">Enrolled: <span class="text-success">{{enrolls_total}}</span></p>
+              <p class="card-text text-gray-400 small">Course Duration: <span class="text-success">{{duration.duration_time}}</span></p>
+             </div>
+            <p class="card-text text-gray-400 small">By: <span class="text-success">{{courses.user_id.name}}</span></p>
+            <p class="card-text text-gray-400 small">Code: <span class="text-success">{{courses.code}}</span></p>
+        </div>
+
+        <div class="mt-5">
+            <h6 class="text-gray-400">Payment Bill Details</h6>
+            <div class="card shadow  card-body p-8 " style="background-color:#042339" >
+                <table class="table table-sm" cellspacing="0" cellpadding="0">
+<!--        <caption>List of roles</caption>-->
+                  <thead>
+                    <tr class="bg-secondary text-white small">
+                       <th scope="col">SN</th>
+                       <th scope="col">Particular</th>
+                       <th scope="col">Qty</th>
+                       <th scope="col">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                        <tr class="small">
+                          <td scope="row">1. </td>
+                          <td class="max-lines" scope="row">{{courses.course_title}}</td>
+                          <td scope="row">
+                            1
+                          </td>
+                             <td scope="row">
+                            $ {{fees.price}}
+                          </td>
+                       </tr>
+
+                        <tr class="small">
+                          <td scope="row" colspan="3">Total Amount</td>
+                          <td  scope="row" class="text-warning">$ {{fees.price}}</td>
+                       </tr>
+                      <tr class="small">
+                          <td scope="row" colspan="3" >Discount %</td>
+                          <td  scope="row">{{fees.discount_percentage}} %</td>
+                       </tr>
+                     <tr class="small">
+                          <td scope="row" colspan="3" >Sub total</td>
+                          <td  scope="row" class="text-success">$ {{fees.discount_amount}}</td>
+                       </tr>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="mt-5">
+            <h6 class="text-gray-400">Add payment details</h6>
+            <div class="card shadow  card-body p-8 " style="background-color:#042339" >
+             <!-- Tabs navs -->
+            <!-- Centered Tabs -->
+            <ul class="nav nav-tabs nav-justified">
+                <li class="nav-item" >
+                 <a class="nav-link active"  data-toggle="tab" href="#credit_card" >
+                     <i class="fa fa-credit-card fa-fw me-2"></i> Credit/Debit card
+                 </a>
+                </li>
+                <li class="nav-item" >
+                 <a class="nav-link "  data-toggle="tab" href="#bank" >
+                     <i class="fas fa-money-check-alt fa-fw me-2"></i>  Bank Transfer
+                 </a>
+                 </li>
+            </ul>
+            <!-- Tabs navs -->
+
+            <!-- Tabs content -->
+            <div class="tab-content">
+              <div id="credit_card" class="tab-pane fade in show active text-gray-500">
+                 <h6 class="text-gray-500 mt-3">Fill in your payment details</h6>
+                   <form class="mt-4 mb-5 w-100" method="post" action="{% url 'students:course_enroll' id=courses.id %}" enctype="multipart/form-data" >
+                        {% csrf_token %}
+                          <div class="form-group small">
+                             <label >Card Number</label>
+                                <input type="text" class="form-control" onkeyup="formatCreditCard()" placeholder="xxxx-xxxx-xxxx-xxxx" name="card-number" id="credit-card" value="" required>
+                          </div>
+                       <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0 small">
+                                <label>Expire Date *</label>
+                                <input type="text" class="form-control" onkeyup="formatExpireDate()" placeholder="MM/YY" id="expire_id" name="expiry date"  required>
+                            </div>
+                           <div class="col-sm-6 small">
+                                <label>Card code (CVC) *</label>
+                                <input type="number" class="form-control" placeholder="CVC" id="cvc_id" name="card code"  required>
+                            </div>
+                       </div>
+                        <button type="submit" class="form-button btn btn-success mt-3">Continue Payment</button>
+                    </form>
+              </div>
+              <div id="bank" class="tab-pane fade text-gray-500">
+                <h6 class="text-gray-500 mt-3 mb-2">Transfer money in following account details</h6>
+                <p class="card-text text-gray-400 small">Account name: <span class="text-success">Online training teacher</span></p>
+                <h6 class="card-text text-gray-400 small">Account number: <span class="text-success">88228920003</span></h6>
+                   <form class="mt-4 mb-5 w-100" method="post" action="{% url 'students:course_enroll' id=courses.id %}" enctype="multipart/form-data" >
+                        {% csrf_token %}
+                          <div class="form-group small">
+                             <label >Post the voucher</label>
+                            <input type="file" class="form-control" id="file_id" name="voucher_image" required>
+                          </div>
+                        <button type="submit" class="form-button btn btn-success mt-3">Continue Payment</button>
+                    </form>
+              </div>
+
+            </div>
+            <!-- Tabs content -->
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <h6 class="text-gray-400">About the teacher</h6>
+            <div class="card shadow  card-body p-8 " style="background-color:#042339" >
+                <div class="d-flex">
+                    {% if courses.user_id.profile_image %}
+                       <img class="rounded-circle border img-profile"  src="{{courses.user_id.profile_image.url}}" height="100" width="100" alt="teacher image">
+                    {% else %}
+                        <img class="rounded-circle border img-profile" src="{% static 'teachers/img/avatars/img.png' %}" height="100" width="100"/>
+                    {% endif %}
+                    <div class="pl-3">
+                            <h6 class="card-text small text-success ">{{courses.user_id.name}}</h6>
+                        <h6 class="card-text small text-gray-400"><span><i>{{courses.user_id.current_position}}</i></span></h6>
+                            <p class="card-text small text-justify mt-3 text-gray-400">{{courses.user_id.profile_description}}.</p>
+                      </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 justify-content-center ">
+           <div class="card shadow  card-body p-2 " style="background-color:#042339" >
+               {% if courses.course_thumbnail %}
+                    <img  src="{{ courses.course_thumbnail.url }}" height="160" alt="teacher image">
+                {%else%}
+                    <img  src="https://images.pexels.com/photos/4498366/pexels-photo-4498366.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" height="160" alt="teacher image">
+               {% endif %}
+                     <div class="card-body">
+                         {% if fees %}
+                             {% if fees.discount_amount %}
+                         <h6 class="card-title text-gray-400 ">Price: <b><s>$ {{fees.price}}</s> </b> <h5 class="text-gray-400 ">{{fees.discount_percentage}}% off</h5> </h6><h5 class="text-gray-400 ">$ {{fees.discount_amount}}</h5>
+                                {%else%}
+                                <h6 class="card-title text-gray-400 ">Price: <b>{{fees.price}} </b></h6>
+                             {%endif%}
+                         {%else%}
+                            <h6 class="card-title text-warning"><b>Free</b></h6>
+                         {% endif %}
+                         <a href="{% url 'students:course_detail' id=courses.id %}">
+                                      <button class="btn btn-warning py-0" type="submit" >
+                                   <h6 class="card-text small p-3">Cancel</h6>
+                                 </button>
+
+                              </a>
+                         <hr>
+                         <h6 class="card-text text-gray-400">This course includes</h6>
+                         <hr>
+                        <p class="card-text small font-weight-light text-gray-400"> <i class="fas fa-check text-success mr-3"></i> <span >Study materials</span></p>
+                    </div>
+            </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block script%}
+<script>
+function formatCreditCard() {
+    var cardNo = document.getElementById("credit-card");
+    var foo = cardNo.value.split("-").join(""); // remove hyphens
+    if (foo.length > 0) {
+         foo= foo.match(new RegExp('.{1,4}', 'g')).join("-");
+    }
+    cardNo.value= foo
+}
+
+function formatExpireDate() {
+    var expire = document.getElementById("expire_id");
+    var foo = expire.value.split("/").join(""); // remove hyphens
+    if (foo.length > 0) {
+         foo= foo.match(new RegExp('.{1,2}', 'g')).join("/");
+    }
+    expire.value= foo
+}
+</script>
+{% endblock script %}

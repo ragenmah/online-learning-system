@@ -29,7 +29,7 @@
           transform-origin: 0 0;
          }
          .max-lines {
-         -webkit-line-clamp: 3;
+         -webkit-line-clamp: 2;
           text-overflow: ellipsis;
           overflow: hidden;
         }
@@ -49,11 +49,11 @@
                 <ul class="navbar-nav text-light" id="accordionSidebar">
 
                     <li class="nav-item">
-                        <a class="nav-link" href=""><i
+                        <a class="nav-link active" href="{% url 'teachers:dashboard' %}"><i
                                                 class="fas fa-inbox fa-sm fa-fw mr-2 text-gray-400"></i> <span>Dashboard</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href=" {% url 'admins:student' %}"><i
+                        <a class="nav-link" href=" {% url 'teachers:students' %}"><i
                                                 class="fa fa-graduation-cap fa-sm fa-fw mr-2 text-gray-400"></i> <span>Students</span></a>
                     </li>
                      <li class="nav-item">
@@ -61,23 +61,27 @@
                                                 class="fa fa-book fa-sm fa-fw mr-2 text-gray-400"></i> <span>Courses</span></a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'teachers:resources' %}"><i
+                                                class="fa fa-folder fa-sm fa-fw mr-2 text-gray-400"></i> <span>Study Resources</span></a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'teachers:duration' %}"><i
-                                                class="fa fa-calendar fa-sm fa-fw mr-2 text-gray-400"></i> <span>Duration</span></a>
+                                                class="fa fa-calendar fa-sm fa-fw mr-2 text-gray-400" ></i> <span>Duration</span></a>
                     </li>
                      <li class="nav-item">
                         <a class="nav-link" href="{% url 'teachers:fees' %}"><i
                                                 class="fa fa-money fa-sm fa-fw mr-2 text-gray-400"></i> <span>Fees</span></a>
                     </li>
                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'admins:courses' %}"><i
-                                                class="fa fa-question-circle fa-sm fa-fw mr-2 text-gray-400"></i> <span>Examination</span></a>
+                        <a class="nav-link" href="{% url 'teachers:tests' %}"><i
+                                                class="fa fa-question-circle fa-sm fa-fw mr-2 text-gray-400"></i> <span>Test</span></a>
                     </li>
                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'admins:courses' %}"><i
+                        <a class="nav-link" href=""><i
                                                 class="fa fa-file fa-sm fa-fw mr-2 text-gray-400"></i> <span>Results</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{% url 'accounts:logout' %}">
                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             <span>Log out</span></a>
                     </li>
@@ -129,11 +133,14 @@
                                         <span class="d-none d-lg-inline mr-2 text-gray-600 small">
                                             {{user.name|upper}}
                                         </span>
-                                        <img class="rounded-circle border img-profile"
-                                            src="{% static 'teachers/img/avatars/img.png' %}" />
+                                        {% if user.profile_image %}
+                                            <img class="rounded-circle border img-profile" src="{{user.profile_image.url}}"/>
+                                         {% else %}
+                                            <img class="rounded-circle border img-profile" src="{% static 'teachers/img/avatars/img.png' %}" />
+                                        {% endif %}
                                     </a>
                                     <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
-                                        <a class="dropdown-item" href="{% url 'teachers:dashboard' %}"><i
+                                        <a class="dropdown-item" href="{% url 'teachers:edit_account' %}"><i
                                                 class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i
@@ -163,10 +170,14 @@
         </div>
 <!--        <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>-->
     </div>
+     {% block script %}
+
+    {% endblock script %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="{% static 'teachers/js/theme.js' %}"></script>
+
 </body>
 
 </html>

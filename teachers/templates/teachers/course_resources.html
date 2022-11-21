@@ -1,0 +1,122 @@
+{% extends 'teachers/base.html' %} {% block title %}Resources{% endblock title %} {% block content %}
+{% load static %}
+
+<div class="container-fluid">
+    <div class="card shadow  card-body p-2 ">
+      <h5 class="pt-2 "><i class="fa fa-folder fa-sm fa-fw mr-2 text-gray-400"></i>Study Resources</h5>
+    </div>
+
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible {{ message.tags }} mt-3">
+          <button type="button" class="close" data-dismiss="alert">
+          ×
+          </button>
+          <strong>{{message}}</strong>
+        </div>
+     {% endfor %}
+    {% endif %}
+
+    {% if courses %}
+    {% for course in courses %}
+    <div class="card shadow mb-4 mt-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="text-primary m-0 font-weight-bold">{{course.course_title}}</h6>
+            <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"><a class="dropdown-item text-danger" href="">Delete Course</a></div>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="m-0 text-gray-500">Course code : {{course.code}}<br></p>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <!-- Start: Split Button Primary -->
+                    <a class="btn btn-primary btn-icon-split" role="button" href="{% url 'teachers:add_resources' courseId=course.id %}"><span
+                            class="text-white-50 icon"><i class="far fa-folder"></i></span><span
+                            class="text-white text">Add Resources</span>
+                    </a>
+                   <a class="btn btn-info btn-icon-split" role="button" href="{% url 'teachers:dashboard' %}"><span
+                            class="text-white-50 icon"><i class="far fa-times-circle"></i></span><span
+                            class="text-white text">Cancel</span>
+                    </a>
+                </div>
+                <div class="col text-right">
+                    <a class="btn btn-warning btn-icon-split" role="button" href=""><span
+                            class="text-white-50 icon"><i class="far fa-user"></i></span><span
+                            class="text-white text">Students</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+      <div>
+          <h6  class="text-primary m-0 font-weight-bold small">No courses is found</h6>
+      </div>
+      {% endif %}
+
+        <div class="card shadow  card-body p-2 mb-3">
+          <h5 class="pt-2 "><i class="fa fa-file fa-sm fa-fw mr-2 text-gray-400"></i>Added Resources</h5>
+        </div>
+        <div>
+        {% if resource %}
+        {% for resource in resource %}
+        <div class="shadow card"><a class="btn btn-link text-left card-header font-weight-bold" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-4-{{resource.id|slugify}}" href="#collapse-4-{{resource.pk|slugify}}" role="button">{{forloop.counter}}. {{resource.resource_title}}</a>
+            <div class="collapse" id="collapse-4-{{resource.pk|slugify}}">
+                <div class="card-body">
+                    <h1 style="font-size: 14px;font-weight: bold;">{{resource.date_created|date:"M d, Y"}}</h1>
+                    <hr>
+                    <p class="m-0">{{resource.resource_description|linebreaksbr}}</p>
+                   <br>
+
+                    <div class="row">
+                        {% if resource.resource %}
+                        <div class="col">
+                           <a class="btn btn-primary btn-icon-split" role="button" href="{{resource.resource.url}}" target="_blank">
+                               <span class="text-white-50 icon">
+                                   <i class="fas fa-eye"></i>
+                               </span>
+                               <span class="text-white text">
+                                   View Resource
+                               </span>
+                           </a>
+                        </div>
+                        <div class="col">
+                           <a class="btn btn-success btn-icon-split" role="button" href="" download><span class="text-white-50 icon"><i class="fas fa-arrow-circle-down"></i></span><span class="text-white text">Download Resource</span></a>
+                        </div>
+                        <div class="col">
+                         <a class="btn btn-success btn-icon-split" role="button" href="{% url 'teachers:update_resources' id=resource.id %}">
+                             <span class="text-white-50 icon">
+                                 <i class="fas fa-edit">
+                             </i>
+                             </span>
+                             <span class="text-white text">Edit Resource</span></a>
+
+                        </div>
+                        {% endif %}
+                        <div class="col text-right">
+                            <a class="btn btn-danger btn-icon-split" role="button" href="{% url 'teachers:delete_resource' id=resource.id %}">
+                                <span class="text-white-50 icon">
+                                    <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    </span><span class="text-white text">Delete</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div>
+          <h6  class="text-primary m-0 font-weight-bold small">No resources are added.</h6>
+        </div>
+        {% endif %}
+
+       <br>
+
+    </div>
+
+</div>
+
+{% endblock content %}
