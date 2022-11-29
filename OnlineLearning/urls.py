@@ -18,6 +18,10 @@ from .views import HomeView, DashboardView
 from django.conf.urls.static import static
 from django.urls import include, path
 from django.conf import settings
+from . import views
+from django.conf.urls import (handler400, handler403, handler404, handler500)
+
+# handler404 = "OnlineLearning.views.page_not_found"
 
 urlpatterns = [
     # path('', views.insert)

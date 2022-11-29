@@ -2,6 +2,7 @@ from django import forms
 
 from accounts.models import Courses, Resources, Tests, Fees
 
+
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Courses
@@ -12,6 +13,7 @@ class CourseForm(forms.ModelForm):
             'course_description': forms.Textarea(attrs={'class': 'form-control', "placeholder": ""}),
             # 'course_thumbnail': forms.ImageField(attrs={'class': 'form-control'})
         }
+
 
 class CourseResourceForm(forms.ModelForm):
     class Meta:

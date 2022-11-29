@@ -1,4 +1,4 @@
-{% extends 'teachers/base.html' %} {% block title %}Resources{% endblock title %} {% block content %}
+{% extends 'admins/base.html' %} {% block title %}Resources{% endblock title %} {% block content %}
 {% load static %}
 
 <div class="container-fluid">
@@ -33,17 +33,17 @@
             <div class="row">
                 <div class="col">
                     <!-- Start: Split Button Primary -->
-                    <a class="btn btn-primary btn-icon-split" role="button" href="{% url 'teachers:add_resources' courseId=course.id %}"><span
+                    <a class="btn btn-primary btn-icon-split" role="button" href="{% url 'admins:add_resources' courseId=course.id %}"><span
                             class="text-white-50 icon"><i class="far fa-folder"></i></span><span
                             class="text-white text">Add Resources</span>
                     </a>
-                   <a class="btn btn-info btn-icon-split" role="button" href="{% url 'teachers:dashboard' %}"><span
+                   <a class="btn btn-info btn-icon-split" role="button" href="{% url 'admins:dashboard' %}"><span
                             class="text-white-50 icon"><i class="far fa-times-circle"></i></span><span
                             class="text-white text">Cancel</span>
                     </a>
                 </div>
                 <div class="col text-right">
-                    <a class="btn btn-warning btn-icon-split" role="button" href="{% url 'teachers:view_student_by_course' course_id=course.id %}"><span
+                    <a class="btn btn-warning btn-icon-split" role="button" href="{% url 'admins:view_student_by_course' course_id=course.id %}"><span
                             class="text-white-50 icon"><i class="far fa-user"></i></span><span
                             class="text-white text">Students</span></a>
                 </div>
@@ -87,7 +87,7 @@
                            <a class="btn btn-success btn-icon-split" role="button" href="" download><span class="text-white-50 icon"><i class="fas fa-arrow-circle-down"></i></span><span class="text-white text">Download Resource</span></a>
                         </div>
                         <div class="col">
-                         <a class="btn btn-success btn-icon-split" role="button" href="{% url 'teachers:update_resources' id=resource.id %}">
+                         <a class="btn btn-success btn-icon-split" role="button" href="{% url 'admins:update_resources' id=resource.id %}">
                              <span class="text-white-50 icon">
                                  <i class="fas fa-edit">
                              </i>
@@ -97,7 +97,7 @@
                         </div>
                         {% endif %}
                         <div class="col text-right">
-                            <a class="btn btn-danger btn-icon-split" role="button" href="{% url 'teachers:delete_resource' id=resource.id %}">
+                            <a class="btn btn-danger btn-icon-split" role="button" href="{% url 'admins:delete_resource' id=resource.id %}">
                                 <span class="text-white-50 icon">
                                     <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
                                     </span><span class="text-white text">Delete</span></a>

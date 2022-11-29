@@ -81,9 +81,9 @@
 <!--        <caption>List of roles</caption>-->
           <thead>
             <tr class="bg-secondary text-white small">
-              <th scope="col">SN</th>
-              <th scope="col">Course title</th>
+                <th scope="col">SN</th>
                 <th scope="col">Course code</th>
+                <th scope="col">Course title</th>
                 {% if durations %}
                     <th scope="col">Duration</th>
                 {% endif %}
@@ -96,10 +96,8 @@
 
                 <tr class="small">
                   <td scope="row">{{ forloop.counter }}</td>
+                  <td scope="row">{{course.code}}</td>
                   <td class="max-lines" scope="row">{{course.course_title}}</td>
-                  <td scope="row">
-                    {{course.code}}
-                  </td>
                      {% for duration in durations %}
                         {% if duration.course_id.id == course.id %}
                         <td class="max-lines">

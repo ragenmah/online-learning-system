@@ -1,10 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'admins/base.html' %} {% block title %}Students{% endblock title %} {% block content %}
+{% load static %}
+<div class="container-fluid">
+    <div class="card shadow  card-body p-2 ">
+      <h5 class="pt-2 "><i class="fa fa-users fa-sm fa-fw mr-2 text-gray-400"></i>Teacher Detail</h5>
+    </div>
+
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible {{ message.tags }} mt-3">
+          <button type="button" class="close" data-dismiss="alert">
+          ×
+          </button>
+          <strong>{{message}}</strong>
+        </div>
+     {% endfor %}
+    {% endif %}
+
+
+    <div class="mt-5">
+        {% if teacher %}
+          <div class="mt-5">
+            <h6 class="">About the teacher</h6>
+            <div class="card shadow  card-body p-8 " style="background-color:#042339" >
+                <div class="d-flex">
+                    {% if teacher.profile_image %}
+                       <img class="rounded-circle border img-profile" src="{{teacher.profile_image.url}}" height="100" width="100" alt="student image">
+                    {% else %}
+                        <img class="rounded-circle border img-profile" src="{% static 'teachers/img/avatars/img.png' %}" height="100" width="100"/>
+                    {% endif %}
+                    <div class="pl-3">
+                            <h6 class="card-text small text-success ">{{teacher.name}}</h6>
+                        <h6 class="card-text small text-gray-400"><span><i>{{teacher.current_position}}</i></span></h6>
+                            <p class="card-text small text-justify mt-3 text-gray-400">{{teacher.profile_description}}</p>
+                      </div>
+                 </div>
+            </div>
+        </div>
+        {% else %}
+      <div>
+          <h5 colspan="4" class="small">No data available</h5>
+      </div>
+      {% endif %}
+    </div>
+
+
+
+    <div class="mt-5">
+            <h6 class="">Enrolled student(s)</h6>
+            <div class="card shadow  card-body p-8 " style="background-color:#042339" >
+                <table class="table table-sm" cellspacing="0" cellpadding="0">
+                  <thead>
+                    <tr class="bg-secondary text-white small">
+                       <th scope="col">SN</th>
+                       <th scope="col">Student(s)</th>
+                        <th scope="col">Contact no</th>
+                        <th>Email</th>
+                         <th scope="col">Enroll Date</th>
+                        <th scope="col">View</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+             {% if enrolls %}
+                    {% for enroll in enrolls %}
+                        <tr class="small">
+                            <td scope="row">{{forloop.counter}}. </td>
+                            <td class="max-lines" scope="row">{{enroll.user_id.name}} </td>
+                            <td class="max-lines" scope="row">{{enroll.user_id.contact_no}}</td>
+                            <td>{{enroll.user_id.email}}</td>
+                            <td>{{enroll.date_created|date:'D d M Y'}}</td>
+                            <td>
+                                <a class="btn btn-primary btn-icon-split pull-right" role="button" href="{% url 'admins:view_student' id=enroll.user_id.id %}">
+                                    <span class="text-white-50 icon small"><i class="fa fa-eye"></i></span>
+                                </a>
+                            </td>
+                       </tr>
+                    {% endfor %}
+            {% else %}
+              <tr>
+                  <td colspan="5" class="small">No courses are enrolled</td>
+              </tr>
+              {% endif %}
+                        <tr class="small">
+                          <td scope="row" colspan="4" class="text-warning">Total Students</td>
+                          <td  scope="row" class="text-warning">{{total_students}}</td>
+                          <td></td>
+                       </tr>
+
+                  </tbody>
+                </table>
+            </div>
+        </div>
+
+</div>
+
+{% endblock content %}

@@ -1,32 +1,77 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CourseForm, CourseResourceForm, CourseQuestionForm, FeesForm
-from accounts.forms import UserEditForm
-from accounts.models import Users, Courses as CourseModel, Duration, Resources, Tests, Enrolls, Fees
+from accounts.forms import UserEditForm, ChangePasswordForm
+from accounts.models import Users, Courses as CourseModel, Duration, Resources, Tests, Enrolls, Fees, FeesPayment
 from OnlineLearning import views
 from accounts.decorators import unauthenticated_user
+import traceback
+from django.db.models import Q
+from django.contrib.auth.hashers import make_password, check_password
 
 @unauthenticated_user
 def DashboardView(request):
     return render(request, "teachers/dashboard.html", views.AllContextItems(request))
+
+
+def getEnrolledStudent(request):
+    enroll_students = Enrolls.objects.all().filter(teacher_id=request.session['user_id'])\
+                        .values_list('user_id', flat=True).distinct()
+    users = Users.objects.all()
+
+    students_data = []
+    for elem in users:
+        for v in enroll_students:
+            if v == elem.id:
+                students_data.append(elem)
+    return students_data
+
+
 @unauthenticated_user
 def StudentView(request):
-    users = Users.objects.get(id=request.session['user_id'])
-    enroll_students = Enrolls.objects.filter(teacher_id=request.session['user_id'])
-    return render(request, 'teachers/students.html', {'students': enroll_students, 'user': users})
+    user = Users.objects.get(id=request.session['user_id'])
+
+    return render(request, 'teachers/students.html', {'students': getEnrolledStudent(request), 'user': user})
+
+
 @unauthenticated_user
 def StudentDetailView(request, id):
     users = Users.objects.get(id=request.session['user_id'])
-    enroll_students = Enrolls.objects.get(user_id=id)
-    return render(request, 'teachers/view_students.html', {'students': enroll_students, 'user': users})
+    students = Users.objects.get(id=id)
+    enrolls = Enrolls.objects.filter(user_id=students, teacher_id=users.id)
+    fees_paid = FeesPayment.objects.filter(paid_from=students, paid_to=users.id)
+    total_paid = 0
+
+    for elem in fees_paid:
+        total_paid += elem.paid_amount
+    print('zip(enrolls,fees_paid)')
+    print('zip(enrolls,fees_pai)')
+    print(zip(enrolls,fees_paid))
+    return render(request, 'teachers/view_students.html', {'students': students, 'user': users,
+                                                           'enrolls': enrolls, 'total_paid': total_paid,
+                                                           'fees_paid': fees_paid,
+                                                           'enroll_data': zip(enrolls,fees_paid)
+                                                           })
+
+
+@unauthenticated_user
+def StudentPaymentDetailView(request, course_id):
+    users = Users.objects.get(id=request.session['user_id'])
+    fees_paid = FeesPayment.objects.filter(course_id=course_id, paid_to=users.id)
+    paid_to = ''
+    if fees_paid:
+        paid_to = Users.objects.get(id=fees_paid[0].paid_to)
+    return render(request, 'teachers/view_payment_details.html', {'user': users, 'fees_paid': fees_paid, 'paid_to': paid_to.name})
+
 
 @unauthenticated_user
 def StudentByCourseView(request, course_id):
     users = Users.objects.get(id=request.session['user_id'])
     courses = CourseModel.objects.get(id=course_id)
-    enroll_students = Enrolls.objects.filter(course_id=courses)
+    enroll_students = Enrolls.objects.filter(course_id=courses, teacher_id=users.id)
     return render(request, 'teachers/view_student_by_course.html', {'students': enroll_students, 'courses': courses,
                                                                     'user': users})
+
 
 @unauthenticated_user
 def CourseView(request):
@@ -34,10 +79,12 @@ def CourseView(request):
     courses = CourseModel.objects.filter(user_id=users)
     return render(request, 'teachers/courses.html', {'courses': courses,  'user': users})
 
+
 @unauthenticated_user
 def CourseCreateView(request):
+    users = Users.objects.get(id=request.session['user_id'])
+
     if request.method == "POST":
-        users = Users.objects.get(id=request.session['user_id'])
         form = CourseForm(request.POST, request.FILES, instance=users)
 
         course = CourseModel(
@@ -62,7 +109,8 @@ def CourseCreateView(request):
             except:
                 pass
     form = CourseForm()
-    return render(request, "teachers/add_courses.html", {'form': form})
+    return render(request, "teachers/add_courses.html", {'form': form, 'user': users})
+
 
 @unauthenticated_user
 def CourseUpdateView(request, id):
@@ -79,12 +127,19 @@ def CourseUpdateView(request, id):
                 pass
     return render(request, "teachers/edit_courses.html", {'form': form})
 
+
 @unauthenticated_user
 def CourseDeleteView(request, id):
-    course = CourseModel.objects.get(id=id)
-    course.delete()
-    messages.success(request, 'Selected Course deleted.')
+    try:
+        course = CourseModel.objects.get(id=id)
+        course.delete()
+        messages.success(request, 'Selected Course deleted.')
+    except Exception as e:
+        message = traceback.format_exc()
+        messages.warning(request, e)
+
     return redirect('teachers:courses')
+
 
 @unauthenticated_user
 def DurationView(request):
@@ -99,6 +154,7 @@ def DurationView(request):
     print(duration)
     # print(duration)
     return render(request, 'teachers/duration.html', {'durations': duration, 'courses': courses, 'user': users}, )
+
 
 @unauthenticated_user
 def DurationCreateView(request):
@@ -136,6 +192,7 @@ def CheckLength(time):
         return '0' + time
     return time
 
+
 @unauthenticated_user
 def DurationUpdateView(request,id):
     duration = Duration.objects.get(id=id)
@@ -165,12 +222,14 @@ def DurationUpdateView(request,id):
                                                            'second': int(str(duration.duration_time)[8:10]),
                                                            'courses': courses})
 
+
 @unauthenticated_user
 def DeleteDurationView(request, id):
     durations = Duration.objects.get(id=id)
     durations.delete()
     messages.success(request, 'Selected duration deleted.')
     return redirect('teachers:duration')
+
 
 @unauthenticated_user
 def FeesView(request):
@@ -192,6 +251,7 @@ def FeesView(request):
     print(fees_data)
     return render(request, 'teachers/fees.html', {'courses': courses, 'fees': fees_data, 'user': users})
 
+
 @unauthenticated_user
 def FeesCreateView(request):
     form = FeesForm()
@@ -207,18 +267,29 @@ def FeesCreateView(request):
         course = CourseModel.objects.get(id=course_id)
         price = request.POST.get('price')
         discount_percentage = request.POST.get('discount_percentage')
-        discountAmt = request.POST.get('discount_amount')
-        if discountAmt=='':
-            discountAmt= str(calculateDiscount(price, discount_percentage))
+        discount_amount = request.POST.get('discount_amount')
+        is_free = request.POST.get('is_free')
 
-        fees = Fees( course_id=course,
-                     price=price,
-                     # discount_percentage=float(str(discount_percentage)),
-                     discount_percentage=discount_percentage,
-                     discount_amount=discountAmt,
-        )
+        # if discount_percentage is not None:
+        if discount_amount == '':
+            # discount_amount = str(calculateDiscount(price, discount_percentage))
+            discount_percentage = None
+        if price == '':
+            price = 0
+        if is_free is None:
+            is_free = False
+        else:
+            is_free = True
+
+        fees = Fees(course_id=course,
+                    price=price,
+                    # discount_percentage=float(str(discount_percentage)),
+                    discount_percentage=discount_percentage,
+                    discount_amount=discount_amount,
+                    is_free=is_free,
+                    )
         if form.is_valid:
-            try:
+            # try:
                 new = Fees.objects.filter(course_id=course)
                 if new.exists():
                     messages.error(request, 'Fees already added for the selected course.')
@@ -226,9 +297,10 @@ def FeesCreateView(request):
                     fees.save()
                     messages.success(request, 'Fees has been added successfully.')
                 return redirect('teachers:fees')
-            except:
-                pass
+            # except:
+            #     pass
     return render(request, "teachers/add_fees.html", {'courses': courses, 'form': form, 'user':users})
+
 
 def FeesUpdateView(request, id):
     user = Users.objects.get(id=request.session['user_id'])
@@ -247,6 +319,7 @@ def FeesUpdateView(request, id):
     return render(request, "teachers/edit_fees.html",
                   {'form': form, 'courseId': fees.course_id.id, 'user': user, 'courses': courses})
 
+
 @unauthenticated_user
 def FeesDeleteView(request, id):
     fees = Fees.objects.get(id=id)
@@ -254,11 +327,13 @@ def FeesDeleteView(request, id):
     messages.success(request, 'Selected Fee deleted.')
     return redirect('teachers:fees')
 
-def calculateDiscount(price, discount) :
+
+def calculateDiscount(price, discount=0):
             numVal1 = price
-            numVal2 = discount / 100;
+            numVal2 = discount / 100
             totalValue = numVal1 - (numVal1 * numVal2)
             return totalValue
+
 
 @unauthenticated_user
 def ResourceView(request):
@@ -266,12 +341,14 @@ def ResourceView(request):
     courses = CourseModel.objects.filter(user_id=users)
     return render(request, 'teachers/resources.html', {'courses': courses, 'user': users})
 
+
 @unauthenticated_user
 def ResourceCourseView(request, courseId):
     users = Users.objects.get(id=request.session['user_id'])
     courses = CourseModel.objects.filter(id=courseId)
     resource = Resources.objects.filter(course_id=courseId)
     return render(request, 'teachers/course_resources.html', {'courses': courses, 'resource': resource, 'user': users})
+
 
 @unauthenticated_user
 def ResourceCourseCreateView(request, courseId):
@@ -298,6 +375,7 @@ def ResourceCourseCreateView(request, courseId):
     form = CourseResourceForm()
     return render(request, "teachers/add_resources.html", {'form': form, 'courseId':courseId, 'user': users})
 
+
 @unauthenticated_user
 def ResourceCourseUpdateView(request, id):
     users = Users.objects.get(id=request.session['user_id'])
@@ -313,6 +391,7 @@ def ResourceCourseUpdateView(request, id):
             except:
                 pass
     return render(request, "teachers/edit_resources.html", {'form': form,  'courseId': resource.course_id.id, 'user': users})
+
 
 @unauthenticated_user
 def ResourceCourseDeleteView(request, id):
@@ -339,17 +418,21 @@ def AccountUpdateView(request):
 
     return render(request, "teachers/edit_account.html", {'form': form,})
 
+
 @unauthenticated_user
 def TestView(request):
     users = Users.objects.get(id=request.session['user_id'])
     courses = CourseModel.objects.filter(user_id=users)
-    return render(request, 'teachers/test.html', {'courses': courses})
+    return render(request, 'teachers/test.html', {'courses': courses, 'user': users})
+
 
 @unauthenticated_user
 def TestCourseView(request, courseId):
     courses = CourseModel.objects.filter(id=courseId)
+    users = Users.objects.get(id=request.session['user_id'])
     test = Tests.objects.filter(course_id=courseId)
-    return render(request, 'teachers/course_test.html', {'courses': courses, 'tests': test})
+    return render(request, 'teachers/course_test.html', {'courses': courses, 'tests': test, 'user': users})
+
 
 @unauthenticated_user
 def TestQuestionCreateView(request, courseId):
@@ -377,6 +460,7 @@ def TestQuestionCreateView(request, courseId):
     form = CourseQuestionForm()
     return render(request, "teachers/add_tests.html", {'form': form, 'courseId': courseId})
 
+
 @unauthenticated_user
 def TestsCourseUpdateView(request, id):
     tests = Tests.objects.get(id=id)
@@ -392,6 +476,7 @@ def TestsCourseUpdateView(request, id):
                 pass
     return render(request, "teachers/edit_tests.html", {'form': form,  'courseId': tests.course_id.id})
 
+
 @unauthenticated_user
 def TestCourseDeleteView(request, id):
     tests = Tests.objects.get(id=id)
@@ -399,3 +484,55 @@ def TestCourseDeleteView(request, id):
     tests.delete()
     messages.success(request, 'Selected resource deleted.')
     return redirect('teachers:course_test', courseId=courseId)
+
+
+def SearchResultView(request):
+    user = Users.objects.get(id=request.session['user_id'])
+
+    if request.method == 'POST':
+        search_text = request.POST.get('search')
+        # course = Courses.objects.get(Q( title__icontains=search_text) & Q(content__icontains=search_text))
+        courses_by_id = CourseModel.objects.filter(user_id=user)
+        courses = courses_by_id.filter((Q(course_title__icontains=search_text)
+                                    | Q(code__icontains=search_text)))
+        fees = Fees.objects.all()
+
+        fees_data = []
+        for elem in courses:
+            for v in fees:
+                if v.course_id.id == elem.id:
+                    fees_data.append(v)
+
+    return render(request, "teachers/search_result.html", {"fees": fees_data,
+                                                           "search_text": search_text,
+                                                           "course_count": len(fees_data),
+                                                           'user': user
+                                                           })
+
+
+
+
+def ChangePasswordView(request):
+    user = Users.objects.get(id=request.session['user_id'])
+    form = ChangePasswordForm()
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        retype_password = request.POST.get('retype_password')
+        check_pwd = check_password(old_password, user.password)
+
+        if old_password == '' or new_password == '' or retype_password =='':
+            messages.error(request, 'All fields are mandatory.')
+        elif check_pwd == False:
+            messages.error(request, 'Your entered password with old password doesn\'t match.')
+        elif new_password != retype_password:
+            messages.error(request, 'Your retype password is not match with new password.')
+        else:
+            user.password = make_password(new_password)
+            user.save()
+            messages.success(request, 'Your password is changed successfully.')
+            redirect('teachers:dashboard')
+
+    return render(request, "teachers/change_password.html", {"form": form,  'user': user})
+
+

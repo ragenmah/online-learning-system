@@ -1,10 +1,11 @@
 {% extends 'admins/base.html' %}
+{% load bootstrap4 %}
 {% load static %}
 {% block title %}Edit Roles{% endblock title %}
 {% block content %}
 <div class="container-fluid">
      <div class="card card-body p-2 ">
-          <h5 class="pt-2 "> <i class="far fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Add Roles</h5>
+          <h5 class="pt-2 "> <i class="far fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Edit Roles</h5>
      </div>
          {% if messages %}
           {% for message in messages %}
@@ -18,23 +19,23 @@
         {% endif %}
 
     <form class="mt-4" method="POST" enctype="multipart/form-data" action="{% url 'admins:update_roles' id=roles.id %}" >
-        {% csrf_token %}
-        <div class="form-group">
-          <label><b>Role Title</b></label>
-            <select name="role" id="role" class="form-control">
-              <option value="1">Admin</option>
-              <option value="2">Teacher</option>
-              <option value="3">Student</option>
-            </select>
-        </div>
-        <div class="form-group">
-          <label><b>Role Description</b></label>
-            <textarea id="textarea" name="description" class="form-control"  rows="10" cols="50">{{roles.role_description}}</textarea>
-        </div>
-
+<!--        {% csrf_token %}-->
+<!--        <div class="form-group">-->
+<!--          <label><b>Role Title</b></label>-->
+<!--            <select name="role_title" id="role" class="form-control">-->
+<!--                {% if roles.role_title == 'admin' %} <option value="{{roles.role_title}}"  selected disabled>Admin</option>{% endif %}-->
+<!--                {% if roles.role_title == "teacher" %}<option value="{{roles.role_title}}"  selected disabled>Teacher</option>{% endif %}-->
+<!--                {% if roles.role_title == "student" %}<option value="{{roles.role_title}}"  selected disabled>Student</option>{% endif %}-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--          <label><b>Role Description</b></label>-->
+<!--            <textarea id="textarea" name="role_description" class="form-control"  rows="10" cols="50">{{roles.role_description}}</textarea>-->
+<!--        </div>-->
+         {% csrf_token %} {% bootstrap_form form%}
         <button type="submit" class="form-button btn btn-success" >Update</button>
-        </div>
-        </div>
+        <a href="{% url 'admins:roles' %}" class="form-button btn btn-primary">Cancel</a>
+
     </form>
 </div>
 

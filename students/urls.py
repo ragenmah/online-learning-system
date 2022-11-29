@@ -12,6 +12,10 @@ urlpatterns = [
 
     path('courses', views.CoursesView, name='courses'),
 
+    path('search', views.SearchResultView, name='search'),
+
+    path('change_pass', views.ChangePasswordView, name='change_password'),
+
     path('course_detail/<int:id>', views.CourseDetailView, name='course_detail'),
     path('course_enroll/<int:id>', views.CourseEnrollView, name='course_enroll'),
     path('course_unroll/<int:id>', views.CourseUnrollView, name='course_unroll'),

@@ -1,4 +1,4 @@
-{% extends 'teachers/base.html' %} {% block title %}Add Courses{% endblock title %}
+{% extends 'admins/base.html' %} {% block title %}Add Courses{% endblock title %}
 {% load bootstrap4 %}
 {% bootstrap_messages %}
 {% block content %}
@@ -38,7 +38,7 @@
         </div>
                  {% bootstrap_form form%}
         <button type="submit" class="form-button btn btn-success">Confirm</button>
-        <a href="{% url 'teachers:fees' %}" class="form-button btn btn-primary">Cancel</a>
+        <a href="{% url 'admins:fees' %}" class="form-button btn btn-primary">Cancel</a>
 
     </form>
 </div>

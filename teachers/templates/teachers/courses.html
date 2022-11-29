@@ -29,8 +29,8 @@
           <thead>
             <tr class="bg-secondary text-white small">
               <th scope="col">SN</th>
+              <th scope="col">Course code</th>
               <th scope="col">Course title</th>
-<!--              <th scope="col">Course Description</th>-->
                 <th scope="col">Course Image</th>
               <th scope="col text-align-right">Actions</th>
             </tr>
@@ -40,8 +40,7 @@
           {% for course in courses %}
             <tr class="small">
               <td scope="row">{{ forloop.counter }}</td>
-
-
+              <td scope="row">{{ course.code }}</td>
               <td class="max-lines">{{course.course_title}}</td>
 <!--              <td class="max-lines">{{course.course_description}}</td>-->
               <td scope="row">

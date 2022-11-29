@@ -28,24 +28,32 @@
           <thead>
             <tr class="bg-secondary text-white small">
               <th scope="col">SN</th>
+              <th scope="col">Course code</th>
               <th scope="col">Course title</th>
               <th scope="col">Fees</th>
               <th scope="col">Discount in %</th>
               <th scope="col">Discount</th>
-              <th scope="col text-align-right">Actions</th>
+              <th scope="col">Paid?</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
           {% if fees %}
           {% for fee in fees %}
             <tr class="small">
-              <th scope="row">{{ forloop.counter }}</th>
-              <td class="max-lines">{{fee.course_id.course_title}}</td>
-              <td class="max-lines">{{fee.price}}</td>
-              <td class="max-lines">{{fee.discount_percentage}}</td>
-              <td class="max-lines">{{fee.discount_amount}}</td>
-              <td>
-                <div class="pull-right dropdown no-arrow justify-content-right">
+                <td scope="row">{{ forloop.counter }}</td>
+                <td >{{fee.course_id.code}} </td>
+                <td class="max-lines">{{fee.course_id.course_title}}</td>
+                <td class="max-lines">{{fee.price}}</td>
+                <td class="max-lines">{{fee.discount_percentage}}</td>
+                <td class="max-lines">{{fee.discount_amount}}</td>
+                <td >
+                    <div class="badge btn-primary">
+                        {% if fee.is_free %}Free{% else %}Paid{% endif %}
+                    </div>
+                </td>
+                <td>
+                    <div class="pull-right dropdown no-arrow justify-content-right">
                     <button
                       class="btn btn-link btn-sm dropdown-toggle"
                       aria-expanded="false"

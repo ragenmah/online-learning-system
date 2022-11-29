@@ -32,11 +32,11 @@
           {% for student in students %}
             <tr class="small">
               <th scope="row">{{ forloop.counter }}</th>
-              <td class="max-lines">{{student.user_id.name}}</td>
-              <td class="max-lines">{{student.user_id.email}}</td>
-              <td class="max-lines">{{student.user_id.address}}</td>
+              <td class="max-lines">{{student.name}}</td>
+              <td class="max-lines">{{student.email}}</td>
+              <td class="max-lines">{{student.address}}</td>
               <td>
-                   <a class="btn btn-primary btn-icon-split pull-right" role="button" href="{% url 'teachers:view_student' id=student.user_id.id %}">
+                   <a class="btn btn-primary btn-icon-split pull-right" role="button" href="{% url 'teachers:view_student' id=student.id %}">
                         <span class="text-white-50 icon small"><i class="far fa-folder"></i></span>
                     </a>
               </td>

@@ -1,4 +1,4 @@
-{% extends 'students/base.html' %} {% block title %}Test{% endblock title %} {% block content %}
+{% extends 'students/base.html' %} {% block title %}{{user.name}} - Test {% endblock title %} {% block content %}
 
 <div >
 <!--    <div class="card shadow  card-body p-2 " >-->
@@ -16,19 +16,18 @@
     {% endif %}
 
 <h5 class="text-gray-500">We have found <b>{{enroll_count}}</b> of your enrolled courses.</h5>
-<h6  class="text-gray-500">Select the courses to take a test.</h6>
+<!--<h6  class="text-gray-500">Select the courses to take a test.</h6>-->
     <div class=" d-flex flex-wrap align-items-center mt-4">
        <div class="row justify-content-left mt-4">
            {% if enrolls %}
            {% for enroll in enrolls %}
                 {% if enroll_count == 1 %}
-                   <div class="col-sm-6">
-
-                       {% elif enroll_count == 2 %}
-                   <div class="col-sm-5">
-                {% else %}
-                    <div class="col-sm-3">
-                {% endif %}
+                   <div class="col-sm-8">
+                      {% elif enroll_count == 2 %}
+                        <div class="col-sm-5">
+                        {% else %}
+                           <div class="col-sm-3">
+                         {% endif %}
                    <a href="{% url 'students:course_test' courseId=enroll.course_id.id %}">
                       <div class="card mb-4 " style="height:300px; display:block;">
                        {% if enroll.course_id.course_thumbnail %}
@@ -39,7 +38,8 @@
                         <div class="card-body">
                           <h6 class="card-title text-gray-400  max-lines">{{enroll.course_id.course_title}}</h6>
                           <p class="card-text text-success small">{{enroll.course_id.user_id.name}}</p>
-                           <b class="text-gray-400">Rs 500</b>
+                           <b class="text-gray-400 badge btn-primary">{{enroll.course_id.code}}</b>
+
                         </div>
                      </div>
                    </a>

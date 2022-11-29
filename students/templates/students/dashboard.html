@@ -47,7 +47,7 @@
                 <div class="card-body p-3 btn-info">
                     <h6>Fees Paid</h6>
                     <hr>
-                    <h6>1</h6>
+                    <h6>{{fee_paid_count}}</h6>
                 </div>
             </div>
         </div>
@@ -58,31 +58,42 @@
     <h6 class="text-gray-400">We have <b>{{course_count}}</b> available courses for you.</h6>
     <div class=" d-flex flex-wrap align-items-center mt-4">
 
-     <div class="row justify-content-left mt-4">
-          {% if all_courses %}
-         {% for course in all_courses %}
-             {% if course_count == 1 %}
-               <div class="col-sm-5">
-                {% elif course_count == 2 %}
-                       <div class="col-sm-6">
-                   {% else %}
-                     <div class="col-sm-3">
-                {% endif %}
-                      <a href="{% url 'students:course_detail' id=course.id %}">
-                       <div class="card mb-4 " style="height:300px; display:block;">
-                           {% if course.course_thumbnail %}
-                              <img class="card-img-top" src="{{ course.course_thumbnail.url }}" height="150" alt="Card image cap">
+     <div class="row  mt-4 ">
+         {% if fees %}
+         {% for fees in fees %}
+                <div class="col-sm-3">
+                      <a href="{% url 'students:course_detail' id=fees.course_id.id %}">
+                       <div class="card mb-4 " style="height:320px!important;  background-clip: padding-box;object-fit: cover; ">
+                           {% if fees.course_id.course_thumbnail %}
+                              <img class="card-img-top" src="{{ fees.course_id.course_thumbnail.url }}" height="150" alt="Card image cap">
                            {%else%}
                               <img class="card-img-top" src="https://images.pexels.com/photos/4498366/pexels-photo-4498366.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" height="150" alt="Card image cap">
                            {% endif %}
                             <div class="card-body">
-                              <h6 class="card-title text-gray-400  max-lines">{{course.course_title}}</h6>
-                              <p class="card-text text-success small">{{course.user_id.name}}</p>
-                              <b class="text-gray-400">Rs 500</b>
+                              <h6 class="card-title text-gray-400  max-lines">{{fees.course_id.course_title}}</h6>
+                                 <b class="text-gray-400 badge btn-primary">{{fees.course_id.code}}</b>
+                              <p class="card-text text-success small mt-2">{{fees.course_id.user_id.name}}</p>
+                                {% if fees.is_free  %}
+                                     <div class="card-title text-warning small"><b>Free</b></div>
+                                {%else%}
+                                {% if fees.discount_amount %}
+                                     <div class="text-gray-400  d-flex justify-content-between align-items-center small card-title">
+                                             <b class="text-gray-400 card-title">$ <s>{{fees.price}}</s> </b>
+                                         <span class="text-gray-400 card-title">{{fees.discount_percentage}}% off</span>
+                                             <b class="text-success card-title">$ {{fees.discount_amount}}</b>
+                                     </div>
+                                    {%else%}
+                                    <div class="card-title text-gray-400 small">$ <b>{{fees.price}} </b></div>
+                                 {%endif%}
+                             {% endif %}
+<!--                                <b class="text-gray-400">$ {{fees.price}}</b>-->
+
+
                             </div>
                         </div>
                      </a>
                 </div>
+
             {% endfor %}
             {% else %}
                 <div class="d-flex align-items-center justify-content-center flex-column">

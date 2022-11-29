@@ -7,11 +7,11 @@
       <h5 class="pt-2 "> <i class="far fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Roles</h5>
     </div>
 
-    <a class="btn btn-success btn-icon-split mt-4" role="button" href="{% url 'admins:add_roles' %}">
+    <a class="btn btn-primary btn-icon-split mt-4" role="button" href="{% url 'admins:add_roles' %}">
         <span class="text-white-50 icon">
-            <i class="fas fa-plus"></i>
+            <i class="fas fa-plus fa-sm text-gray-400"></i>
         </span>
-        <span class="text-white text">Add Roles</span>
+        <span class="text-white text small">Add Roles</span>
     </a>
         {% if messages %}
           {% for message in messages %}
@@ -24,11 +24,11 @@
          {% endfor %}
         {% endif %}
     <div class="table-responsive mt-4">
-      <table class="table table-sm table-bordered table-striped shadow">
+      <table class="table table-sm table-bordered ">
 <!--        <caption>List of roles</caption>-->
           <thead>
-            <tr class="bg-primary text-white">
-              <th scope="col">ID</th>
+            <tr class="bg-secondary text-white small">
+              <th scope="col">S.N.</th>
               <th scope="col">Role</th>
               <th scope="col">Role Description</th>
               <th scope="col text-align-right">Actions</th>
@@ -37,9 +37,8 @@
           <tbody>
           {% if roles %}
           {% for role in roles %}
-
-            <tr>
-              <th scope="row">{{role.id}}</th>
+            <tr class="small">
+              <th scope="row">{{forloop.counter}}</th>
               <td>{{role.role_title}}</td>
               <td>{{role.role_description}}</td>
               <td>
@@ -57,10 +56,10 @@
                           <i class="fa fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
                           &nbsp;Edit Role
                       </a>
-                      <a class="dropdown-item" href="{% url 'admins:delete_roles' id=role.id %}">
-                          <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
-                          &nbsp;Delete Role
-                      </a>
+<!--                      <a class="dropdown-item" href="{% url 'admins:delete_roles' id=role.id %}">-->
+<!--                          <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>-->
+<!--                          &nbsp;Delete Role-->
+<!--                      </a>-->
                     </div>
                   </div>
 

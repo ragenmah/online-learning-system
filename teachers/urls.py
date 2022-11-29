@@ -10,9 +10,13 @@ urlpatterns = [
     path('', DashboardView, name='dashboard'),
 
     path('profile/edit', views.AccountUpdateView, name='edit_account'),
+    path('change_pass', views.ChangePasswordView, name='change_password'),
+
+    path('search', views.SearchResultView, name='search'),
 
     path('students', views.StudentView, name='students'),
     path('students/view/<int:id>', views.StudentDetailView, name='view_student'),
+    path('students/view/payment/<int:course_id>', views.StudentPaymentDetailView, name='view_student_payment'),
     path('students/view_by_course/<int:course_id>', views.StudentByCourseView, name='view_student_by_course'),
 
     path('courses', views.CourseView, name='courses'),
@@ -24,8 +28,6 @@ urlpatterns = [
     path('duration/add', views.DurationCreateView, name='add_duration'),
     path('duration/update/<int:id>', views.DurationUpdateView, name='update_duration'),
     path('duration/delete/<int:id>', views.DeleteDurationView, name='delete_duration'),
-    # path('courses/update/<int:id>', views.CourseUpdateView, name='update_courses'),
-    # path('courses/delete/<int:id>', views.CourseDeleteView, name='delete_courses'),
 
     path('fees', views.FeesView, name='fees'),
     path('fees/add', views.FeesCreateView, name='add_fees'),

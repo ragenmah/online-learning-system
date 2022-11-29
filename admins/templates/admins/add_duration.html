@@ -1,4 +1,4 @@
-{% extends 'teachers/base.html' %} {% block title %}Add Duration{% endblock title %}
+{% extends 'admins/base.html' %} {% block title %}Add Duration{% endblock title %}
 {% load bootstrap4 %}
 {% bootstrap_messages %}
 {% block content %}
@@ -52,7 +52,7 @@
         </div>
 
         <button type="submit" class="form-button btn btn-success">Confirm</button>
-        <a href="{% url 'teachers:duration' %}" class="form-button btn btn-primary">Cancel</a>
+        <a href="{% url 'admins:duration' %}" class="form-button btn btn-primary">Cancel</a>
 
     </form>
 </div>

@@ -3,7 +3,7 @@
 
 <div class="container-fluid">
     <div class="card shadow  card-body p-2 ">
-      <h5 class="pt-2 "><i class="fa fa-folder fa-sm fa-fw mr-2 text-gray-400"></i>Study Resources</h5>
+      <h5 class="pt-2 "><i class="fa fa-graduation-cap fa-sm fa-fw mr-2 text-gray-400"></i>Tests</h5>
     </div>
 
 
@@ -26,9 +26,9 @@
 <!--        <caption>List of roles</caption>-->
           <thead>
             <tr class="bg-secondary text-white small">
-              <th scope="col">SN</th>
-              <th scope="col">Course title</th>
+                <th scope="col">SN</th>
                 <th scope="col">Course Code</th>
+                <th scope="col">Course title</th>
                 <th scope="col">Manage</th>
             </tr>
           </thead>
@@ -36,11 +36,9 @@
           {% if courses %}
           {% for course in courses %}
             <tr class="small">
-              <td scope="row">{{ forloop.counter }}</td>
-              <td class="max-lines" scope="row">{{course.course_title}}</td>
-              <td scope="row">
-                 {{course.code}}
-              </td>
+                <td scope="row">{{ forloop.counter }}</td>
+                <td scope="row">{{course.code}}</td>
+                <td class="max-lines" scope="row">{{course.course_title}}</td>
                 <td>
                      <a class="btn btn-primary btn-icon-split" role="button" href="{% url 'teachers:course_tests' courseId=course.id %}">
                         <span class="text-white-50 icon small"><i class="far fa-folder"></i></span>

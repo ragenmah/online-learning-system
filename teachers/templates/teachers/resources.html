@@ -27,8 +27,8 @@
           <thead>
             <tr class="bg-secondary text-white small">
               <th scope="col">SN</th>
-              <th scope="col">Course title</th>
-                <th scope="col">Course Code</th>
+              <th scope="col">Course Code</th>
+                <th scope="col">Course title</th>
                 <th scope="col">Manage</th>
             </tr>
           </thead>
@@ -37,10 +37,8 @@
           {% for course in courses %}
             <tr class="small">
               <td scope="row">{{ forloop.counter }}</td>
+              <td class="max-lines" scope="row">{{course.code}}</td>
               <td class="max-lines" scope="row">{{course.course_title}}</td>
-              <td scope="row">
-                 {{course.code}}
-              </td>
                 <td>
                      <a class="btn btn-primary btn-icon-split" role="button" href="{% url 'teachers:course_resources' courseId=course.id %}">
                         <span class="text-white-50 icon small"><i class="far fa-folder"></i></span>

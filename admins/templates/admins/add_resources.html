@@ -1,4 +1,4 @@
-{% extends 'teachers/base.html' %} {% block title %}Add Courses{% endblock title %}
+{% extends 'admins/base.html' %} {% block title %}Add Courses{% endblock title %}
 {% load bootstrap4 %}
 {% bootstrap_messages %}
 {% block content %}
@@ -23,7 +23,7 @@
     <form class="mt-4" method="post" enctype="multipart/form-data">
         {% csrf_token %} {% bootstrap_form form%}
         <button type="submit" class="form-button btn btn-success">Submit</button>
-        <a href="{% url 'teachers:course_resources' courseId=courseId %}" class="form-button btn btn-primary">Cancel</a>
+        <a href="{% url 'admins:course_resources' courseId=courseId %}" class="form-button btn btn-primary">Cancel</a>
     </form>
 
 </div>

@@ -19,10 +19,11 @@
             <h3 class="pt-2 text-gray-400 "><b>{{courses.course_title}}</b></h3>
              <div class="d-flex mt-3">
               <p class="card-text text-gray-400 small pr-5">Enrolled: <span class="text-success">{{enrolls_total}}</span></p>
-              <p class="card-text text-gray-400 small">Course Duration: <span class="text-success">{{duration.duration_time}}</span></p>
+              <p class="card-text text-gray-400 small">Course Duration: <span class="text-success">{% if duration %} {{duration.duration_time}}{%endif%}</span></p>
              </div>
             <p class="card-text text-gray-400 small">By: <span class="text-success">{{courses.user_id.name}}</span></p>
             <p class="card-text text-gray-400 small">Code: <span class="text-success">{{courses.code}}</span></p>
+            <p class="card-text text-gray-400 small">Posted on: <span class="text-success">{{courses.date_created|date:'d M Y'}}</span></p>
             </div>
 
         <div class="mt-5">
@@ -43,9 +44,9 @@
                     {% endif %}
                     <div class="pl-3">
                             <h6 class="card-text small text-success ">{{courses.user_id.name}}</h6>
-                        <h6 class="card-text small text-gray-400"><span><i>{{courses.user_id.current_position}}</i></span></h6>
-                            <p class="card-text small text-justify mt-3 text-gray-400">{{courses.user_id.profile_description}}.</p>
-                      </div>
+                       <h6 class="card-text small text-gray-400"><span><i>{% if courses.user_id.current_position %}{{courses.user_id.current_position}}{%endif%}</i></span></h6>
+                            <p class="card-text small text-justify mt-3 text-gray-400">{% if courses.user_id.profile_description %}{{courses.user_id.profile_description}}{%endif%}</p>
+                        </div>
                  </div>
             </div>
         </div>
@@ -59,19 +60,23 @@
                     <img  src="https://images.pexels.com/photos/4498366/pexels-photo-4498366.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" height="160" alt="teacher image">
                {% endif %}
                      <div class="card-body">
-                         {% if fees %}
-                             {% if fees.discount_amount %}
-                         <h6 class="card-title text-gray-400 ">Price: <b><s>$ {{fees.price}}</s> </b> <h5 class="text-gray-400 ">{{fees.discount_percentage}}% off</h5> </h6><h5 class="text-gray-400 ">$ {{fees.discount_amount}}</h5>
+                           {% if fees.is_free  %}
+                                     <h6 class="card-title text-warning"><b>Free</b></h6>
+                            {%else%}
+                            {% if fees.discount_amount %}
+                             <h6 class="card-title text-gray-400 ">
+                                 Price: <b><s>$ {{fees.price}}</s> </b>
+                                 <h5 class="text-gray-400 ">{{fees.discount_percentage}}% off</h5></h6>
+                                <h5 class="text-gray-400 ">$ {{fees.discount_amount}}</h5>
                                 {%else%}
-                                <h6 class="card-title text-gray-400 ">Price: <b>{{fees.price}} </b></h6>
+                                <h6 class="card-title text-gray-400 ">Price: $ <b>{{fees.price}} </b></h6>
                              {%endif%}
+                         {%endif%}
+
+                         {% if fees.is_free or is_paid %}
+                            <form method="post" enctype="multipart/form-data"  action="{% url 'students:course_enroll' id=courses.id %}">
                          {%else%}
-                            <h6 class="card-title text-warning"><b>Free</b></h6>
-                         {% endif %}
-                         {% if fees %}
-                              <form method="post" enctype="multipart/form-data"  action="{% url 'students:payments' id=courses.id %}">
-                         {%else%}
-                             <form method="post" enctype="multipart/form-data"  action="{% url 'students:course_enroll' id=courses.id %}">
+                           <form method="post" enctype="multipart/form-data"  action="{% url 'students:payments' id=courses.id %}">
                          {% endif %}
                                  {% csrf_token %}
                                  <button class="btn btn-primary py-0" type="submit">

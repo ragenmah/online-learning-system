@@ -1,8 +1,8 @@
-{% extends 'teachers/base.html' %} {% block title %}Students{% endblock title %} {% block content %}
+{% extends 'admins/base.html' %} {% block title %}Students{% endblock title %} {% block content %}
 {% load static %}
 <div class="container-fluid">
     <div class="card shadow  card-body p-2 ">
-      <h5 class="pt-2 "><i class="fa fa-graduation-cap fa-sm fa-fw mr-2 text-gray-400"></i>Students Detail</h5>
+      <h5 class="pt-2 "><i class="fa fa-money fa-sm fa-fw mr-2 text-gray-400"></i>Student Payment Detail</h5>
     </div>
 
 
@@ -31,13 +31,13 @@
             <div class="row">
                 <div class="col">
                     <!-- Start: Split Button Primary -->
-                   <a class="btn btn-info btn-icon-split" role="button" href="{% url 'teachers:dashboard' %}"><span
+                   <a class="btn btn-info btn-icon-split" role="button" href="{% url 'admins:dashboard' %}"><span
                             class="text-white-50 icon"><i class="far fa-times-circle"></i></span><span
                             class="text-white text">Cancel</span>
                     </a>
                 </div>
                 <div class="col text-right">
-                    <a class="btn btn-warning btn-icon-split" role="button" href="{% url 'teachers:view_student_by_course' course_id=fee_paid.course_id.id %}"><span
+                    <a class="btn btn-warning btn-icon-split" role="button" href="{% url 'admins:view_student_by_course' course_id=fee_paid.course_id.id %}"><span
                             class="text-white-50 icon"><i class="far fa-user"></i></span><span
                             class="text-white text">Students</span></a>
                 </div>
@@ -56,11 +56,19 @@
                   </tr>
                   <tr class="small">
                       <td scope="row">Paid amount: </td>
-                      <td>$ {{fee_paid.Paid_amount}}</td>
+                      <td>$ {{fee_paid.paid_amount}}</td>
                   </tr>
                   <tr class="small">
                       <td scope="row">Paid date: </td>
                       <td>{{fee_paid.date_created|date:'D d M Y'}}</td>
+                  </tr>
+                   <tr class="small">
+                      <td scope="row">Paid from: </td>
+                      <td>{{fee_paid.paid_from.name}}</td>
+                  </tr>
+                   <tr class="small">
+                      <td scope="row">Paid To: </td>
+                      <td>{{paid_to}}</td>
                   </tr>
                   {% if fee_paid.payment_method == "Bank account"%}
                    <tr class="small">
@@ -76,7 +84,7 @@
     {% endfor %}
     {% else %}
       <div>
-          <h6  class="text-primary m-0 font-weight-bold small">No courses is found</h6>
+          <h6  class="text-primary m-0 font-weight-bold small">No payment is found</h6>
       </div>
       {% endif %}
 
