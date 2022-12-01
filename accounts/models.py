@@ -66,7 +66,7 @@ class Roles(models.Model):
 
 
 class Users(models.Model):
-    user_role_id = models.ForeignKey('Roles', models.DO_NOTHING, db_column='user_role_id')
+    user_role_id = models.ForeignKey('Roles', on_delete=models.CASCADE, db_column='user_role_id')
     name = models.CharField(max_length=100)
     profile_image = models.ImageField(upload_to=fileUserpath, null=True, blank=True)
     profile_description = models.TextField(null=True, blank=True)

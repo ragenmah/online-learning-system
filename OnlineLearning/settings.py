@@ -89,27 +89,27 @@ WSGI_APPLICATION = 'OnlineLearning.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'online_learning',
-#         'USER': 'root',
-#         'PASSWORD': '',
-#         'HOST': '127.0.0.1',
-#         'PORT': '3306',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'epiz_33098166_online_learning		',
-        'USER': 'epiz_33098166',
+        'NAME': 'online_learning',
+        'USER': 'root',
         'PASSWORD': '',
-        'HOST': 'sql113.epizy.com',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'epiz_33098166_online_learning		',
+#         'USER': 'epiz_33098166',
+#         'PASSWORD': '',
+#         'HOST': 'sql113.epizy.com',
+#         'PORT': '3306',
+#     }
+# }
 
 
 # Password validation
