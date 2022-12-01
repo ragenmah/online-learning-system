@@ -61,40 +61,51 @@
                     </tr>
                   </thead>
                   <tbody>
-             {% if enrolls %}
-                    {% for enroll in enrolls %}
+                {% if enrolls %}
+                <tr>
+                      <td colspan="6" class="small">Paid courses</td>
+                  </tr>
+                    {% for enroll,paid in enroll_data %}
                         <tr class="small">
-                          <td scope="row">{{forloop.counter}}. </td>
-                          <td class="max-lines" scope="row">{{enroll.course_id.course_title}}</td>
-                          <td class="max-lines" scope="row">{{enroll.course_id.code}}</td>
-                            {% if fees_paid %}
-                                {% for paid in fees_paid %}
-                                    {% if paid.course_id.id == enroll.course_id.id %}
-                                        <td class="">{{paid.date_created|date:'D d M Y'}}</td>
-                                        <td class="">$ {{paid.paid_amount}}</td>
-                                        <td>
-                                             <a class="btn btn-primary btn-icon-split pull-right" role="button" href="{% url 'teachers:view_student_payment' course_id=paid.course_id.id %}">
-                                                 <span class="text-white-50 icon small"><i class="fa fa-eye"></i></span>
-                                             </a>
-                                        </td>
-                                    {% endif %}
-                                {% endfor %}
-                            {% else %}
-                                        <td class="">{{enroll.date_created|date:'D d M Y'}}</td>
-                                         <td class="">Free</td>
-                                         <td></td>
-                            {% endif %}
+                            <td scope="row">{{forloop.counter}}. </td>
+                            <td class="max-lines" scope="row">{{enroll.course_id.course_title}}</td>
+                            <td scope="row">{{enroll.course_id.code}}</td>
+                            <td class="">{{paid.date_created|date:'D d M Y'}}</td>
+                            <td class="">$ {{paid.paid_amount}}</td>
+                            <td>
+                                <a class="btn btn-primary btn-icon-split pull-right" role="button" href="{% url 'teachers:view_student_payment' course_id=paid.course_id.id id=students.id %}">
+                                    <span class="text-white-50 icon small"><i class="fa fa-eye"></i></span>
+                                </a>
+                            </td>
 
                        </tr>
                     {% endfor %}
-            {% else %}
-              <tr>
-                  <td colspan="5" class="small">No courses has are enrolled</td>
-              </tr>
+                {% if enroll_free %}
+                <tr>
+                      <td colspan="6" class="small">Free enrolled courses</td>
+                  </tr>
+                {% for enroll in enroll_free %}
+                <tr class="small">
+                            <td scope="row">{{forloop.counter}}. </td>
+                            <td class="max-lines" scope="row">{{enroll.course_title}}</td>
+                            <td scope="row">{{enroll.code}}</td>
+                            <td class="">{{enroll.date_created|date:'D d M Y'}}</td>
+                            <td class="">$ 0</td>
+                            <td>
+                                <a class="btn btn-primary btn-icon-split pull-right" role="button" href="">
+                                    <span class="text-white-50 icon small"><i class="fa fa-eye"></i></span>
+                                </a>
+                            </td>
 
+                       </tr>
+                {% endfor %}
+                 {% endif %}
+                {% else %}
+                  <tr>
+                      <td colspan="6" class="small">No courses has been enrolled</td>
+                  </tr>
               {% endif %}
-
-                        <tr class="small">
+                <tr class="small">
                           <td scope="row" colspan="4">Total Amount</td>
                           <td  scope="row" class="text-warning">$ {{total_paid}}</td>
                           <td></td>

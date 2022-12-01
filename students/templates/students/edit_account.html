@@ -1,6 +1,28 @@
 {% extends 'students/base.html' %} {% block title %}{{user.name}} - Edit Profile{% endblock title %}
+{% block style %}
+<style>
+
+input[type=file]::file-selector-button {
+  border: 2px solid #6c5ce7;
+  padding: .2em .4em;
+  border-radius: 1em;
+  background-color: #052339;
+  color: #f2f2ff;
+  transition: 1s;
+  font-size:.8rem;
+}
+
+input[type=file]::file-selector-button:hover {
+  background-color: #81ecec;
+  border: 2px solid #00cec9;
+   color: #020202;
+}
+</style>
+    <!-- Body Block : END -->
+    {% endblock style %}
 {% load bootstrap4 %}
 {% bootstrap_messages %}
+
 {% block content %}
 
 

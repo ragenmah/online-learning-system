@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import render,redirect
 from django.views.generic import TemplateView, CreateView, ListView, DeleteView, DetailView
 from .forms import RolesForm, CourseForm
@@ -161,14 +163,32 @@ def StudentDetailView(request, id):
     students = Users.objects.get(id=id)
     enrolls = Enrolls.objects.filter(user_id=students)
     fees_paid = FeesPayment.objects.filter(paid_from=students)
-    total_paid = 0
+    enroll_course = Enrolls.objects.all().filter(user_id=students).values_list('course_id', flat=True).distinct()
 
+    total_paid = 0
     for elem in fees_paid:
         total_paid += elem.paid_amount
+    print("fees_paid")
+    print("fees_paid")
+    print("fees_paid")
+    print(fees_paid)
+    print("fees_paid")
+    print("fees_paid")
+    print("fees_paid")
+    print(enroll_course)
+
+    enroll_free = []
+    for elem in enroll_course:
+      if FeesPayment.objects.filter(paid_from=students, course_id=elem).exists():
+            pass
+      else:
+            course = Courses.objects.get(id=elem)
+            enroll_free.append(course)
 
     return render(request, 'admins/view_students.html', {'students': students, 'user': users,
                                                            'enrolls': enrolls, 'total_paid': total_paid,
-                                                           'fees_paid': fees_paid
+                                                           'fees_paid': fees_paid, 'enroll_data': zip(enrolls, fees_paid),
+                                                            'enroll_free': enroll_free
                                                            })
 
 
@@ -177,7 +197,7 @@ def StudentPaymentDetailView(request, course_id, id):
     users = Users.objects.get(id=request.session['user_id'])
     users_id = Users.objects.get(id=id)
     fees_paid = FeesPayment.objects.filter(course_id=course_id, paid_from=users_id)
-    paid_to = ''
+    paid_to = []
     if fees_paid:
         paid_to = Users.objects.get(id=fees_paid[0].paid_to)
     return render(request, 'admins/view_payment_details.html', {'user': users, 'fees_paid': fees_paid, 'paid_to': paid_to.name})
@@ -447,27 +467,43 @@ def ResourceCourseView(request, courseId):
 @unauthenticated_user
 def ResourceCourseCreateView(request, courseId):
     users = Users.objects.get(id=request.session['user_id'])
+    ALLOWED_TYPES = ['jpg', 'jpeg', 'png', 'pdf', 'mp4']
 
     if request.method == "POST":
         courses_instance = Courses.objects.get(id=courseId)
         form = CourseResourceForm(request.POST, request.FILES)
-
-        resource = Resources(
-            resource_title=request.POST.get('resource_title'),
-            resource_description=request.POST.get('resource_description'),
-            course_id=courses_instance,
-            resource=request.FILES['resource']
-        )
-        if form.is_valid:
-               try:
-                resource.save()
-                messages.success(request, 'Resource has been added successfully.')
-                return redirect('admins:course_resources', courseId=courseId)
-               except:
-                   pass
+        resource_file = request.FILES['resource']
+        print("resource_file")
+        print("resource_file")
+        print(resource_file)
+        print(resource_file)
+        if not resource_file:
+            messages.error(request, 'Missing resource file')
+        try:
+            extension = os.path.splitext(resource_file.name)[1][1:].lower()
+            if extension in ALLOWED_TYPES:
+                if form.is_valid:
+                    try:
+                        resource = Resources(
+                            resource_title=request.POST.get('resource_title'),
+                            resource_description=request.POST.get('resource_description'),
+                            course_id=courses_instance,
+                            resource=request.FILES['resource'],
+                            resource_type=extension
+                        )
+                        resource.save()
+                        messages.success(request, 'Resource has been added successfully.')
+                        return redirect('teachers:course_resources', courseId=courseId)
+                    except:
+                        pass
+            else:
+                messages.error(request, 'File types is not allowed. Only Jpg, png and pdf is allowed')
+        except Exception as e:
+            messages.error(request, e)
+            # messages.error(request, 'Can not identify file type')
 
     form = CourseResourceForm()
-    return render(request, "admins/add_resources.html", {'form': form, 'courseId':courseId, 'user': users})
+    return render(request, "admins/add_resources.html", {'form': form, 'courseId': courseId, 'user': users})
 
 
 @unauthenticated_user

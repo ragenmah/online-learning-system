@@ -45,31 +45,42 @@
                     <hr>
                     <p class="m-0 text-gray-500">{{resource.resource_description|linebreaksbr}}</p>
                    <br>
-                    <div class="row">
-                        {% if resource.resource %}
-                        <div class="col">
-                           <a class="btn btn-primary btn-icon-split" role="button" href="{{resource.resource.url}}" target="_blank">
-                               <span class="text-white-50 icon">
-                                   <i class="fas fa-eye"></i>
-                               </span>
-                               <span class="text-white text">
-                                   View Resource
-                               </span>
-                           </a>
+                    {% if  resource.resource_type  %}
+                        {% if resource.resource_type=="pdf"%}
+                         <div class="row">
+                            {% if resource.resource %}
+                            <div class="col">
+                               <a class="btn btn-primary btn-icon-split" role="button" href="{{resource.resource.url}}" target="_blank">
+                                   <span class="text-white-50 icon">
+                                       <i class="fas fa-eye"></i>
+                                   </span>
+                                   <span class="text-white text">
+                                       View Resource
+                                   </span>
+                               </a>
+                            </div>
+                            <div class="col">
+                               <a class="btn btn-success btn-icon-split" role="button" href="{{resource.resource.url}}" download>
+                                   <span class="text-white-50 icon">
+                                       <i class="fas fa-arrow-circle-down"></i>
+                                   </span>
+                                   <span class="text-white text">
+                                       Download Resource
+                                   </span>
+                               </a>
+                            </div>
+                            {% endif %}
                         </div>
-                        <div class="col">
-                           <a class="btn btn-success btn-icon-split" role="button" href="{{resource.resource.url}}" download>
-                               <span class="text-white-50 icon">
-                                   <i class="fas fa-arrow-circle-down"></i>
-                               </span>
-                               <span class="text-white text">
-                                   Download Resource
-                               </span>
-                           </a>
-                        </div>
-                        {% endif %}
+                        'jpg', 'jpeg', 'png', 'pdf', 'mp4'
+                         {%elif resource.resource_type== 'jpg'
+                            or resource.resource_type== 'jpeg'
+                            or resource.resource_type== 'png'  %}
+                        <img src="{{resource.resource.url}}">
+                        {%else%}
 
-                    </div>
+                        {%endif%}
+                    {%endif%}
+
                 </div>
             </div>
         </div>

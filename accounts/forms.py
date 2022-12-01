@@ -29,8 +29,7 @@ class UserEditForm(forms.ModelForm):
         exclude = ('user_role_id', 'password')
         widgets = {
                     'profile_description': forms.Textarea(attrs={'class': 'form-control', "placeholder": ""}),
-                     'current_position': forms.TextInput( attrs={'class': 'form-control form-control-user', 'placeholder': ''}, ),
-
+                     'current_position': forms.TextInput(attrs={'class': 'form-control form-control-user', 'placeholder': ''}, ),
         }
 
 

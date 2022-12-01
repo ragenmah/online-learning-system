@@ -19,7 +19,7 @@ class CourseResourceForm(forms.ModelForm):
     class Meta:
         model = Resources
         # fields="__all__"
-        exclude = ('course_id',)
+        exclude = ('course_id','resource_type')
         widgets = {
             'resource_title': forms.TextInput(attrs={'class': 'form-control', "placeholder": ""}),
             'resource_description': forms.Textarea(attrs={'class': 'form-control', "placeholder": ""}),

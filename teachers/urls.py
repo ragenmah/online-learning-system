@@ -16,7 +16,7 @@ urlpatterns = [
 
     path('students', views.StudentView, name='students'),
     path('students/view/<int:id>', views.StudentDetailView, name='view_student'),
-    path('students/view/payment/<int:course_id>', views.StudentPaymentDetailView, name='view_student_payment'),
+    path('students/view/payment/<int:course_id>/<int:id>', views.StudentPaymentDetailView, name='view_student_payment'),
     path('students/view_by_course/<int:course_id>', views.StudentByCourseView, name='view_student_by_course'),
 
     path('courses', views.CourseView, name='courses'),

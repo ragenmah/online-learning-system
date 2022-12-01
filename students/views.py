@@ -107,6 +107,10 @@ def CourseEnrollView(request, id):
         paid_to=courses.user_id.id,
     )
 
+    print("resource")
+    print("resource")
+    print(resource.resource_type)
+
     if request.method == "POST":
         # try:
             new = Enrolls.objects.filter(course_id=courses, user_id=user)

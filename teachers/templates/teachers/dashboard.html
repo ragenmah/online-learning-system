@@ -64,7 +64,10 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h6 class="text-primary m-0 font-weight-bold">{{course.course_title}}</h6>
                 <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"><a class="dropdown-item text-danger" href="">Delete Course</a></div>
+                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
+                        <a class="dropdown-item text-danger" href="{% url 'teachers:delete_courses' id=course.id %}">Delete Course</a>
+                        <a class="dropdown-item text-success" href="{% url 'teachers:update_courses' id=course.id %}">Edit Course</a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">

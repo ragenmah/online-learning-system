@@ -66,7 +66,7 @@ class Roles(models.Model):
 
 
 class Users(models.Model):
-    user_role_id = models.ForeignKey('Roles', on_delete=models.CASCADE, db_column='user_role_id')
+    user_role_id = models.ForeignKey('Roles', models.DO_NOTHING, db_column='user_role_id')
     name = models.CharField(max_length=100)
     profile_image = models.ImageField(upload_to=fileUserpath, null=True, blank=True)
     profile_description = models.TextField(null=True, blank=True)
@@ -111,10 +111,11 @@ class Duration(models.Model):
 
 
 class Resources(models.Model):
+    course_id = models.ForeignKey('Courses', on_delete=models.CASCADE, db_column='course_id')
     resource_title = models.CharField(max_length=422, null=True)
     resource_description = models.TextField(null=True)
     resource = models.FileField(upload_to=filePdfPath, null=True)
-    course_id = models.ForeignKey('Courses', on_delete=models.CASCADE, db_column='course_id')
+    resource_type = models.CharField(max_length=10, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:

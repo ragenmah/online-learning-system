@@ -22,12 +22,12 @@
            {% if enrolls %}
            {% for enroll in enrolls %}
                 {% if enroll_count == 1 %}
-                   <div class="col-sm-8">
-                      {% elif enroll_count == 2 %}
-                        <div class="col-sm-5">
-                        {% else %}
-                           <div class="col-sm-3">
-                         {% endif %}
+                   <div class="col-lg-12 col-sm-3" >
+                {% elif enroll_count == 2 %}
+                    <div class="col-lg-12 col-sm-5">
+                {% else %}
+                   <div class="col-sm-3">
+                {% endif %}
                    <a href="{% url 'students:course_test' courseId=enroll.course_id.id %}">
                       <div class="card mb-4 " style="height:300px; display:block;">
                        {% if enroll.course_id.course_thumbnail %}
