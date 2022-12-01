@@ -1,0 +1,70 @@
+{% extends 'admins/base.html' %} {% block title %}{{courses.course_title}}{% endblock title %} {% block content %}
+
+<div class="container-fluid">
+    <div class="card shadow  card-body p-2 ">
+      <h5 class="pt-2 "><i class="fa fa-graduation-cap fa-sm fa-fw mr-2 text-gray-400"></i>Students</h5>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible {{ message.tags }} mt-3">
+          <button type="button" class="close" data-dismiss="alert">
+          ×
+          </button>
+          <strong>{{message}}</strong>
+        </div>
+     {% endfor %}
+    {% endif %}
+
+    <div class="card shadow mb-4 mt-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="text-primary m-0 font-weight-bold">{{courses.course_title}}</h6>
+                <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"><a class="dropdown-item text-danger" href="">Delete Course</a></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="m-0 text-gray-500">Course code : {{courses.code}}<br></p>
+                <br>
+
+            </div>
+        </div>
+
+
+    <div class="table-responsive mt-4">
+      <table class="table table-sm table-bordered ">
+          <thead>
+            <tr class="bg-secondary text-white small">
+              <th scope="col">SN</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Address</th>
+              <th scope="col text-align-right">View</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% if students %}
+          {% for student in students %}
+            <tr class="small">
+              <th scope="row">{{ forloop.counter }}</th>
+              <td class="max-lines">{{student.user_id.name}}</td>
+              <td class="max-lines">{{student.user_id.email}}</td>
+              <td class="max-lines">{{student.user_id.address}}</td>
+              <td>
+                   <a class="btn btn-primary btn-icon-split pull-right" role="button" href="{% url 'teachers:view_student' id=student.user_id.id %}">
+                        <span class="text-white-50 icon small"><i class="far fa-folder"></i></span>
+                    </a>
+              </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+              <tr>
+                  <td colspan="4" class="small">No students had enrolled.</td>
+              </tr>
+              {% endif %}
+          </tbody>
+      </table>
+    </div>
+</div>
+
+{% endblock content %}

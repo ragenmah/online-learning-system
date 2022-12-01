@@ -13,8 +13,10 @@ from django.contrib import messages
 roles_std = Roles.objects.get(role_title='student').id
 roles_teacher = Roles.objects.get(role_title='teacher').id
 
+
 class IndexView(TemplateView):
     template_name = "accounts/index.html"
+
 
 def TeacherCreateView(request):
         form = UserForm()
@@ -52,6 +54,7 @@ def TeacherCreateView(request):
 
         return render(request, "accounts/teacher_signup.html",context)
 
+
 def StudentCreateView(request):
     form = UserForm()
     context = {'form': form}
@@ -87,6 +90,7 @@ def StudentCreateView(request):
 
     return render(request, "accounts/student_signup.html", context)
 
+
 # register users -> student and teacher ...this is not used
 def SaveUser(roles, request,context,urlName,redirectTo):
     user_role_id = roles
@@ -120,30 +124,42 @@ def SaveUser(roles, request,context,urlName,redirectTo):
 def LoginView(request):
     CreateAdmin()
     if request.method == "POST":
-        email = request.POST.get('email')
-        user = Users.objects.get(email=email)
-        checkpassword= check_password(request.POST['password'], user.password)
-        roles = Roles.objects.get(id=user.user_role_id.id)
 
-        if checkpassword == False:
+        try:
+            email = request.POST.get('email')
+            user = Users.objects.get(email=email)
+            check_pwd = check_password(request.POST['password'], user.password)
+            roles = Roles.objects.get(id=user.user_role_id.id)
+            check_email = Users.objects.filter(email=email)
+
+            if check_email.exists():
+                pass
+            else:
+                messages.warning(request, 'Email not found')
+                pass
+            if check_pwd == False:
                 messages.error(request, 'Password is incorrect')
                 pass
-        else:
-            request.session['user_id'] = user.id
-            # request.session['email']= user.email
-            request.session['roles_std'] = roles_std
-            request.session['roles_teacher']= roles_teacher
-            messages.success(request, 'Welcome ' + user.name)
-
-            if roles.role_title == 'teacher':
-                return redirect('teachers:dashboard')
-            if roles.role_title == 'student':
-                return redirect('students:dashboard')
             else:
-                return redirect('admins:dashboard')
-        # else: pass
+                request.session['user_id'] = user.id
+                # request.session['email']= user.email
+                request.session['roles_std'] = roles_std
+                request.session['roles_teacher']= roles_teacher
+                messages.success(request, 'Welcome ' + user.name)
+
+                if roles.role_title == 'teacher':
+                    request.session['teacher_login'] = roles_teacher
+                    return redirect('teachers:dashboard')
+                if roles.role_title == 'student':
+                    request.session['student_login'] = roles_std
+                    return redirect('students:dashboard')
+                else:
+                    return redirect('admins:dashboard')
+        except:
+            pass
     context = {}
     return render(request, "accounts/login.html", context)
+
 
 def CreateAdmin():
     new = Users.objects.filter(email='admin@admin.com')
@@ -162,8 +178,13 @@ def CreateAdmin():
                      address=address, dob=dob, contact_no=contact_no, password=password)
         user.save()
 
+
 def LogoutView(request):
         del request.session['user_id']
         del request.session['roles_std']
         del request.session['roles_teacher']
+        if 'teacher_login' in request.session:
+            del request.session['teacher_login']
+        if 'student_login' in request.session:
+            del request.session['student_login']
         return redirect('/')

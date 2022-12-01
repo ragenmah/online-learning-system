@@ -1,0 +1,52 @@
+{% extends 'students/base.html' %} {% block title %}{{user.name}} - Edit Profile{% endblock title %}
+{% block style %}
+<style>
+
+input[type=file]::file-selector-button {
+  border: 2px solid #6c5ce7;
+  padding: .2em .4em;
+  border-radius: 1em;
+  background-color: #052339;
+  color: #f2f2ff;
+  transition: 1s;
+  font-size:.8rem;
+}
+
+input[type=file]::file-selector-button:hover {
+  background-color: #81ecec;
+  border: 2px solid #00cec9;
+   color: #020202;
+}
+</style>
+    <!-- Body Block : END -->
+    {% endblock style %}
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="card shadow  card-body p-2 ">
+      <h5 class="pt-2 "><i class="fa fa-book fa-sm fa-fw mr-2 text-gray-400"></i>Edit Profile</h5>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible {{ message.tags }} mt-3">
+          <button type="button" class="close" data-dismiss="alert">
+          ×
+          </button>
+          <strong>{{message}}</strong>
+        </div>
+     {% endfor %}
+    {% endif %}
+
+    <form class="mt-4 mb-5 w-100" method="post" enctype="multipart/form-data" >
+        {% csrf_token %} {% bootstrap_form form%}
+        <button type="submit" class="form-button btn btn-success">Submit</button>
+        <a href="{% url 'students:dashboard' %}" class="form-button btn btn-primary">Cancel</a>
+    </form>
+</div>
+
+{% endblock content %}

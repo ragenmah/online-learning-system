@@ -1,18 +1,11 @@
-{% extends 'admins/base.html' %} {% block title %}Dashboard - Roles{% endblock title %} {% block content %}
+{% extends 'admins/base.html' %} {% block title %}Dashboard - Teachers{% endblock title %} {% block content %}
 
 
 
 <div class="container-fluid">
     <div class="card card-body p-2 ">
-      <h5 class="pt-2 "> <i class="fa fa-book fa-sm fa-fw mr-2 text-gray-400"></i>Teachers</h5>
+      <h5 class="pt-2 "> <i class="fa fa-users fa-sm fa-fw mr-2 text-gray-400"></i>Teachers</h5>
     </div>
-
-    <a class="btn btn-success btn-icon-split mt-4" role="button" href="{% url 'admins:add_courses' %}">
-        <span class="text-white-50 icon">
-            <i class="fas fa-plus"></i>
-        </span>
-        <span class="text-white text">Add Teachers</span>
-    </a>
         {% if messages %}
           {% for message in messages %}
             <div class="alert alert-dismissible {{ message.tags }} mt-3">
@@ -24,57 +17,62 @@
          {% endfor %}
         {% endif %}
     <div class="table-responsive mt-4">
-      <table id="datatable" class="table table-sm table-bordered table-striped shadow">
+      <table id="datatable" class="table table-sm table-bordered ">
 <!--        <caption>List of roles</caption>-->
           <thead>
-            <tr class="bg-primary text-white">
-              <th scope="col">ID</th>
-              <th scope="col">Student name</th>
+            <tr class="bg-secondary text-white small">
+              <th scope="col">S.N.</th>
+              <th scope="col">Teacher name</th>
               <th scope="col">Email</th>
               <th scope="col">Address</th>
               <th scope="col">dob</th>
               <th scope="col">Contact no</th>
+              <th scope="col text-align-right">View</th>
               <th scope="col text-align-right">Actions</th>
+
             </tr>
           </thead>
           <tbody>
           {% if teachers %}
-          {% for student in teachers %}
-
-            <tr>
-              <th scope="row">{{student.id}}</th>
-              <td>{{student.name}}</td>
-              <td>{{student.email}}</td>
-              <td>{{student.address}}</td>
-              <td>{{student.dob}}</td>
-              <td>{{student.contact_no}}</td>
+          {% for teacher in teachers %}
+            <tr class="small">
+              <th scope="row">{{forloop.counter}}</th>
+              <td>{{teacher.name}}</td>
+              <td>{{teacher.email}}</td>
+              <td>{{teacher.address}}</td>
+              <td>{{teacher.dob|date:'D d M Y'}}</td>
+              <td>{{teacher.contact_no}}</td>
               <td>
-                <div class="pull-right dropdown no-arrow justify-content-right">
-                    <button
-                      class="btn btn-link btn-sm dropdown-toggle"
-                      aria-expanded="false"
-                      data-toggle="dropdown"
-                      type="button"
-                    >
-                      <i class="fas fa-ellipsis-v "></i>
-                    </button>
-                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
-                      <a class="dropdown-item btn-success" href="{% url 'admins:edit_roles' id=student.id %}">
-                          <i class="fa fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
-                          &nbsp;Edit Teacher
-                      </a>
-                      <a class="dropdown-item" href="{% url 'admins:delete_roles' id=student.id %}">
-                          <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
-                          &nbsp;Delete Teacher
-                      </a>
-                    </div>
-                  </div>
-
+                  <a class="btn btn-primary btn-icon-split pull-right" role="button" href="{% url 'admins:view_teacher' id=teacher.id %}">
+                        <span class="text-white-50 icon small"><i class="far fa-eye"></i></span>
+                    </a>
               </td>
+              <td>
+                    <div class="pull-right dropdown no-arrow justify-content-right">
+                        <button
+                          class="btn btn-link btn-sm dropdown-toggle"
+                          aria-expanded="false"
+                          data-toggle="dropdown"
+                          type="button"
+                        >
+                          <i class="fas fa-ellipsis-v "></i>
+                        </button>
+                        <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
+                          <a class="dropdown-item btn-success" href="{% url 'admins:edit_users' user_id=teacher.id %}">
+                              <i class="fa fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                              &nbsp;Edit Teacher
+                          </a>
+                          <a class="dropdown-item" href="{% url 'admins:delete_users' user_id=teacher.id %}">
+                              <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
+                              &nbsp;Delete Teacher
+                          </a>
+                        </div>
+                    </div>
+                 </td>
             </tr>
             {% endfor %}
               {% else %}
-          <tr ><td colspan="7">No students has been found</td> </tr>
+          <tr ><td colspan="7" class="small">No teachers has been found</td> </tr>
               {% endif %}
 
           </tbody>

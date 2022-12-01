@@ -1,0 +1,31 @@
+{% extends 'admins/base.html' %} {% block title %}Edit Courses{% endblock title %}
+{% load bootstrap4 %}
+{% bootstrap_messages %}
+{% block content %}
+
+
+<div class="container-fluid">
+    <div class="card shadow  card-body p-2 ">
+      <h5 class="pt-2 "><i class="fa fa-book fa-sm fa-fw mr-2 text-gray-400"></i>Edit Courses</h5>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible {{ message.tags }} mt-3">
+          <button type="button" class="close" data-dismiss="alert">
+          ×
+          </button>
+          <strong>{{message}}</strong>
+        </div>
+     {% endfor %}
+    {% endif %}
+
+    <form class="mt-4 mb-5" method="post" enctype="multipart/form-data" >
+        {% csrf_token %} {% bootstrap_form form%}
+        <button type="submit" class="form-button btn btn-success">Submit</button>
+        <a href="{% url 'admins:courses' %}" class="form-button btn btn-primary">Cancel</a>
+    </form>
+
+</div>
+
+{% endblock content %}

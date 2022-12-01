@@ -1,4 +1,4 @@
-{% extends 'teachers/base.html' %} {% block title %}Courses{% endblock title %} {% block content %}
+{% extends 'teachers/base.html' %} {% block title %}Durations{% endblock title %} {% block content %}
 
 <div class="container-fluid">
     <div class="card shadow  card-body p-2 ">
@@ -6,8 +6,10 @@
     </div>
 
      <a class="btn btn-primary btn-icon-split mt-4" role="button" href="{% url 'teachers:add_duration' %}">
-
-        <span class="text-white text ">Add Duration</span>
+        <span class="text-white-50 icon">
+            <i class="fas fa-plus fa-sm text-gray-400"></i>
+        </span>
+        <span class="text-white text small">Add Duration</span>
     </a>
     {% if messages %}
       {% for message in messages %}
@@ -20,57 +22,152 @@
      {% endfor %}
     {% endif %}
 
-    <div class="table-responsive mt-4">
+<!--    <div class="table-responsive mt-4">-->
+<!--      <table class="table table-sm table-bordered ">-->
+<!--&lt;!&ndash;        <caption>List of roles</caption>&ndash;&gt;-->
+<!--          <thead>-->
+<!--            <tr class="bg-secondary text-white small">-->
+<!--              <th scope="col">SN</th>-->
+<!--              <th scope="col">Course title</th>-->
+<!--              <th scope="col">Duration</th>-->
+<!--              <th scope="col text-align-right">Actions</th>-->
+<!--            </tr>-->
+<!--          </thead>-->
+<!--          <tbody>-->
+<!--          {% if durations %}-->
+<!--          {% for course in courses %}-->
+<!--          {% for duration in durations %}-->
+<!--          {% if duration.course_id.id == course.id %}-->
+<!--            <tr class="small">-->
+<!--              <th scope="row">{{ counter.increment }} {{ counter.count }}</th>-->
+<!--              <td class="max-lines">{{duration.course_id.course_title}}</td>-->
+<!--              <td class="max-lines">{{duration.duration_time}}</td>-->
+<!--              <td>-->
+<!--                <div class="pull-right dropdown no-arrow justify-content-right">-->
+<!--                    <button-->
+<!--                      class="btn btn-link btn-sm dropdown-toggle"-->
+<!--                      aria-expanded="false"-->
+<!--                      data-toggle="dropdown"-->
+<!--                      type="button"-->
+<!--                    >-->
+<!--                      <i class="fas fa-ellipsis-v "></i>-->
+<!--                    </button>-->
+<!--                    <div class="dropdown-menu shadow dropdown-menu-right animated&#45;&#45;fade-in">-->
+<!--                      <a class="dropdown-item btn-success" href="{% url 'teachers:update_courses' id=duration.id %}">-->
+<!--                          <i class="fa fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>-->
+<!--                          &nbsp;Edit Duration-->
+<!--                      </a>-->
+<!--                      <a class="dropdown-item" href="{% url 'teachers:delete_courses' id=duration.id %}">-->
+<!--                          <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>-->
+<!--                          &nbsp;Delete Duration-->
+<!--                      </a>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          {% endif %}-->
+<!--          {% endfor %}-->
+<!--            {% endfor %}-->
+<!--            {% else %}-->
+<!--              <tr>-->
+<!--                  <td colspan="4" class="small">No courses has been added</td>-->
+<!--              </tr>-->
+<!--              {% endif %}-->
+<!--          </tbody>-->
+<!--      </table>-->
+<!--    </div>-->
+<div class="table-responsive mt-4">
       <table class="table table-sm table-bordered ">
 <!--        <caption>List of roles</caption>-->
           <thead>
             <tr class="bg-secondary text-white small">
-              <th scope="col">SN</th>
-              <th scope="col">Course title</th>
-              <th scope="col">Duration</th>
+                <th scope="col">SN</th>
+                <th scope="col">Course code</th>
+                <th scope="col">Course title</th>
+                {% if durations %}
+                    <th scope="col">Duration</th>
+                {% endif %}
               <th scope="col text-align-right">Actions</th>
             </tr>
           </thead>
           <tbody>
-          {% if durations %}
-          {% for duration in durations %}
-            <tr class="small">
-              <th scope="row">{{ forloop.counter }}</th>
-              <td class="max-lines">{{duration.course_id.course_title}}</td>
-              <td class="max-lines">{{duration.duration_time}}</td>
-              <td>
-                <div class="pull-right dropdown no-arrow justify-content-right">
-                    <button
-                      class="btn btn-link btn-sm dropdown-toggle"
-                      aria-expanded="false"
-                      data-toggle="dropdown"
-                      type="button"
-                    >
-                      <i class="fas fa-ellipsis-v "></i>
-                    </button>
-                    <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
-                      <a class="dropdown-item btn-success" href="{% url 'teachers:update_courses' id=duration.id %}">
-                          <i class="fa fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
-                          &nbsp;Edit Duration
-                      </a>
-                      <a class="dropdown-item" href="{% url 'teachers:delete_courses' id=duration.id %}">
-                          <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
-                          &nbsp;Delete Duration
-                      </a>
-                    </div>
-                  </div>
-              </td>
-            </tr>
+          {% if courses %}
+          {% for course in courses %}
+
+                <tr class="small">
+                  <td scope="row">{{ forloop.counter }}</td>
+                  <td scope="row">{{course.code}}</td>
+                  <td class="max-lines" scope="row">{{course.course_title}}</td>
+                     {% for duration in durations %}
+                        {% if duration.course_id.id == course.id %}
+                        <td class="max-lines">
+                         {{duration.duration_time}}
+                       </td>
+                        <td>
+                            <div class="pull-right dropdown no-arrow justify-content-right">
+                                <button
+                                  class="btn btn-link btn-sm dropdown-toggle"
+                                  aria-expanded="false"
+                                  data-toggle="dropdown"
+                                  type="button"
+                                >
+                                  <i class="fas fa-ellipsis-v "></i>
+                                </button>
+                                <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in">
+                                  <a class="dropdown-item btn-success" href="{% url 'teachers:update_duration' id=duration.id %}">
+                                      <i class="fa fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
+                                      &nbsp;Edit Duration
+                                  </a>
+                                  <a class="dropdown-item" href="{% url 'teachers:delete_duration' id=duration.id %}">
+                                      <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
+                                      &nbsp;Delete Duration
+                                  </a>
+                                </div>
+                            </div>
+                         </td>
+
+                    {% endif %}
+                    {% endfor %}
+               </tr>
+
+
+<!--            <tr class="small">-->
+<!--            <td scope="row">{{ forloop.counter }}</td>-->
+<!--              <td class="max-lines" scope="row">{{course.course_title}}</td>-->
+<!--              <td scope="row">-->
+<!--                 {{course.code}}-->
+<!--              </td>-->
+<!--                   <td class="max-lines">-->
+
+<!--                         Not set-->
+
+<!--                    </td>-->
+<!--                <td>-->
+
+<!--                    <div class="pull-right dropdown no-arrow justify-content-right">-->
+<!--                        <button-->
+<!--                          class="btn btn-link btn-sm dropdown-toggle"-->
+<!--                          aria-expanded="false"-->
+<!--                          data-toggle="dropdown"-->
+<!--                          type="button"-->
+<!--                        >-->
+<!--                          <i class="fas fa-ellipsis-v "></i>-->
+<!--                        </button>-->
+
+<!--                    </div>-->
+
+<!--                 </td>-->
+<!--              </tr>-->
             {% endfor %}
             {% else %}
               <tr>
                   <td colspan="4" class="small">No courses has been added</td>
               </tr>
+
               {% endif %}
           </tbody>
       </table>
     </div>
-
 </div>
 
 {% endblock content %}

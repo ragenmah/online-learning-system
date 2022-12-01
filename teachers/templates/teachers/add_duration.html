@@ -1,4 +1,4 @@
-{% extends 'teachers/base.html' %} {% block title %}Add Courses{% endblock title %}
+{% extends 'teachers/base.html' %} {% block title %}Add Duration{% endblock title %}
 {% load bootstrap4 %}
 {% bootstrap_messages %}
 {% block content %}
@@ -39,15 +39,15 @@
         <div class="d-flex justify-content-between w-25">
             <div class="form-group">
                  <label>Hours</label>
-                <input type="number" class="form-control" name="hour" value="00">
+                <input type="number" class="form-control" id="hour_id" name="hour" min="0" max="99" value="">
             </div>
             <div class="form-group">
                  <label>Minutes</label>
-                 <input type="number" class="form-control" name="minute" value="00">
+                 <input type="number" class="form-control" id="minute_id" name="minute"min="0" max="99" value="">
             </div>
             <div class="form-group">
                 <label>Seconds</label>
-                <input type="number" class="form-control" name="second" value="00">
+                <input type="number" class="form-control" id="second_id" name="second" min="0" max="99" value="">
             </div>
         </div>
 
@@ -58,3 +58,32 @@
 </div>
 
 {% endblock content %}
+
+{% block script%}
+<script>
+    document.getElementById('hour_id').addEventListener('keypress', event => {
+    if (!`${event.target.value}${event.key}`.match(/^[0-9]{0,2}$/)) {
+        // block the input if result does not match
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+
+    }
+    });
+    document.getElementById('minute_id').addEventListener('keypress', event => {
+    if (!`${event.target.value}${event.key}`.match(/^[0-9]{0,2}$/)) {
+        // block the input if result does not match
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    }
+    });document.getElementById('second_id').addEventListener('keypress', event => {
+    if (!`${event.target.value}${event.key}`.match(/^[0-9]{0,2}$/)) {
+        // block the input if result does not match
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    }
+    });
+</script>
+{% endblock script%}

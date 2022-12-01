@@ -9,11 +9,20 @@
     <link rel="stylesheet" href="{% static 'accounts/bootstrap/css/bootstrap.min.css' %}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" />
     <style>
-        .form-control-date{font-size:.8rem;border-radius:10rem;  }
+        .form-control-date{
+            font-size:.8rem;
+            border-radius:10rem;
+            display: block;
+            height:auto
+        }
         .btn-cancel{
             border-radius:20px;
             background-color:#F6C23D;
         }
+        .snps-inline-select {
+            width: auto;
+            display: inline-block;
+            }
     </style>
 </head>
 
@@ -48,7 +57,7 @@
                                             <div class="form-group">{{form.email}}</div>
                                             <div class="form-group">{{form.address}}</div>
                                             <div class="form-group ">
-                                                <div class="form-control form-control-date ">Date of birth: <span >{{form.dob}}</span></div>
+                                    <div class="form-control form-control-date ">Date of birth: <span >{{form.dob}}</span></div>
                                             </div>
                                             <div class="form-group "> {{form.contact_no}}</div>
                                             <div class="form-group "> {{form.password}}</div>

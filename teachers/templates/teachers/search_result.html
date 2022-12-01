@@ -1,0 +1,63 @@
+{% extends 'teachers/base.html' %} {% block title %}{{search_text}} - Search{% endblock title %} {% block content %}
+
+<div class="container-fluid">
+<!--    <div class="card shadow  card-body p-2 " >-->
+<!--      <h5 class="pt-2 text-white">Dashboard</h5>-->
+    <!--    </div>-->
+    {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-dismissible {{ message.tags }} mt-3">
+              <button type="button" class="close" data-dismiss="alert">
+              ×
+              </button>
+              <strong>{{message}}</strong>
+            </div>
+         {% endfor %}
+    {% endif %}
+
+<h6 class="text-black-500">We have found <b>{{course_count}}</b> result for {{search_text}}.</h6>
+          {% if fees %}
+         {% for fees in fees %}
+           <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="text-primary m-0 font-weight-bold">{{fees.course_id.course_title}}</h6>
+                    <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
+                        <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"><a class="dropdown-item text-danger" href="">Delete Course</a></div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="m-0 text-gray-500">Course code : {{fees.course_id.code}}<br></p>
+                    <br>
+                    <div class="row">
+                        <div class="col">
+                            <a class="btn btn-primary btn-icon-split" role="button" href="{% url 'teachers:course_resources' courseId=fees.course_id.id %}"><span
+                                    class="text-white-50 icon"><i class="far fa-folder"></i></span><span
+                                    class="text-white text">Manage Resources</span>
+                            </a>
+                            <a class="btn btn-primary btn-icon-split" role="button" href="{% url 'teachers:course_tests' courseId=fees.course_id.id %}"><span
+                                    class="text-white-50 icon"><i class="far fa-folder"></i></span><span
+                                    class="text-white text">Manage Tests</span>
+                            </a>
+                        </div>
+                        <div class="col text-right">
+                            <a class="btn btn-warning btn-icon-split" role="button" href="{% url 'teachers:view_student_by_course' course_id=fees.course_id.id %}"><span
+                                    class="text-white-50 icon"><i class="far fa-user"></i></span><span
+                                    class="text-white text">Students</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+                <div class="d-flex align-items-center justify-content-center flex-column">
+                   <label><b class="text-primary pt-4">No Courses are found.</b></label><br/>
+                </div>
+            {% endif %}
+
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

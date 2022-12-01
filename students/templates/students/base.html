@@ -22,14 +22,31 @@
             .card{
             color:#f3f3ff;
             background-color: #031F42;
+            border:none;
             }
 
             .card>img {
                  transition: transform .5s ease-in-out;
               transform-origin: 0 0;
               }
+            #content,html{
+            background-color:#020E1B;
+            }
 
+            .max-lines {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                }
+                li.active{
+                background-color:#020E1B;
+                }
         </style>
+    {% block style %}
+
+    <!-- Body Block : END -->
+    {% endblock style %}
 </head>
 
 <body id="page-top">
@@ -45,23 +62,23 @@
                 <ul class="navbar-nav text-light" id="accordionSidebar">
 
                     <li class="nav-item">
-                        <a class="nav-link" href=""><i
+                        <a class="nav-link active" href="{% url 'students:dashboard' %}"><i
                                                 class="fas fa-inbox fa-sm fa-fw mr-2 text-gray-400"></i> <span>Dashboard</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href=""><i
+                        <a class="nav-link" href="{% url 'students:courses' %}"><i
                                                 class="fa fa-book fa-sm fa-fw mr-2 text-gray-400"></i> <span>Courses</span></a>
                     </li>
                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'admins:courses' %}"><i
-                                                class="fa fa-question-circle fa-sm fa-fw mr-2 text-gray-400"></i> <span>Examination</span></a>
+                        <a class="nav-link" href="{% url 'students:tests' %}"><i
+                                                class="fa fa-graduation-cap fa-sm fa-fw mr-2 text-gray-400"></i> <span>Test</span></a>
                     </li>
-                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'admins:courses' %}"><i
-                                                class="fa fa-file fa-sm fa-fw mr-2 text-gray-400"></i> <span>Results</span></a>
-                    </li>
+<!--                     <li class="nav-item">-->
+<!--                        <a class="nav-link" href=""><i-->
+<!--                                                class="fa fa-file fa-sm fa-fw mr-2 text-gray-400"></i> <span>Results</span></a>-->
+<!--                    </li>-->
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{% url 'accounts:logout' %}">
                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             <span>Log out</span></a>
                     </li>
@@ -76,15 +93,15 @@
             <div id="content">
                 <nav class="navbar navbar-light navbar-expand shadow mb-4 topbar static-top">
                     <div class="container-fluid">
-
                         <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button">
                             <i class="fas fa-bars"></i>
                         </button>
-                        <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <form class="form-inline d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="POST"  action="{% url 'students:search' %}">
+                            {% csrf_token %}
                             <div class="input-group">
-                                <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ..." />
+                                <input class="bg-light form-control border-0 small" type="text" name="search" placeholder="Enter a course code or course name ..." />
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary py-0" type="button">
+                                    <button class="btn btn-primary py-0" type="submit">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
@@ -94,11 +111,12 @@
                             <li class="nav-item dropdown d-sm-none no-arrow">
                                 <a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
                                 <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" aria-labelledby="searchDropdown">
-                                    <form class="form-inline mr-auto navbar-search w-100">
-                                        <div class="input-group">
-                                            <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ..." />
+                                    <form class="form-inline mr-auto navbar-search w-100" method="POST"  action="{% url 'students:search' %}">
+                                            {% csrf_token %}
+                                            <div class="input-group">
+                                            <input class="bg-light form-control border-0 small" type="text" name="search" placeholder="Enter a course code or course name ..." />
                                             <div class="input-group-append">
-                                                <button class="btn btn-primary py-0" type="button">
+                                                <button class="btn btn-primary py-0" type="submit">
                                                     <i class="fas fa-search"></i>
                                                 </button>
                                             </div>
@@ -113,12 +131,18 @@
                                         <span class="d-none d-lg-inline mr-2 text-gray-600 small">
                                             {{user.name|upper}}
                                         </span>
-                                        <img class="rounded-circle border img-profile"
-                                            src="{% static 'teachers/img/avatars/img.png' %}" />
+                                        {% if user.profile_image %}
+                                            <img class="rounded-circle border img-profile" src="{{user.profile_image.url}}"/>
+                                         {% else %}
+                                            <img class="rounded-circle border img-profile" src="{% static 'teachers/img/avatars/img.png' %}" />
+                                        {% endif %}
                                     </a>
                                     <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
-                                        <a class="dropdown-item" href="{% url 'teachers:dashboard' %}"><i
+                                        <a class="dropdown-item" href="{% url 'students:edit_account' %}"><i
                                                 class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{% url 'students:change_password' %}"><i
+                                                class="fas fa-unlock-alt fa-sm fa-fw mr-2 text-gray-400"></i>Change Password</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i
                                                 class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
@@ -128,7 +152,7 @@
                         </ul>
                     </div>
                 </nav>
-                <div class="container-fluid">
+                <div class="container-fluid mb-5">
                     <!-- Body Block : START -->
                     {% block content %}
 
@@ -137,21 +161,24 @@
                 </div>
 
             </div>
-<!--            <footer class="bg-white sticky-footer">-->
-<!--                <div class="container my-auto">-->
-<!--                        <div class="text-right my-auto copyright">-->
-<!--                        <span>Copyright © OLS 2022</span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </footer>-->
+
         </div>
-<!--        <a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>-->
     </div>
+
+    {% block script %}
+
+    <!-- Body Block : END -->
+    {% endblock script %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>-->
     <script src="{% static 'teachers/js/theme.js' %}"></script>
-
+    <script>
+        $(document).ready(function() {
+          $('li.active').removeClass('active').removeAttr('aria-current');
+          $('a[href="' + location.pathname + '"]').closest('li').addClass('active').attr('aria-current', 'page');
+        });
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,124 @@
+{% extends 'teachers/base.html' %} {% block title %}Students{% endblock title %} {% block content %}
+{% load static %}
+<div class="container-fluid">
+    <div class="card shadow  card-body p-2 ">
+      <h5 class="pt-2 "><i class="fa fa-graduation-cap fa-sm fa-fw mr-2 text-gray-400"></i>Students Detail</h5>
+    </div>
+
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible {{ message.tags }} mt-3">
+          <button type="button" class="close" data-dismiss="alert">
+          ×
+          </button>
+          <strong>{{message}}</strong>
+        </div>
+     {% endfor %}
+    {% endif %}
+
+
+    <div class="mt-5">
+        {% if students %}
+          <div class="mt-5">
+            <h6 class="">About the student</h6>
+            <div class="card shadow  card-body p-8 " style="background-color:#042339" >
+                <div class="d-flex">
+                    {% if students.profile_image %}
+                       <img class="rounded-circle border img-profile" src="{{students.profile_image.url}}" height="100" width="100" alt="student image">
+                    {% else %}
+                        <img class="rounded-circle border img-profile" src="{% static 'teachers/img/avatars/img.png' %}" height="100" width="100"/>
+                    {% endif %}
+                    <div class="pl-3">
+                            <h6 class="card-text small text-success ">{{students.name}}</h6>
+                        <h6 class="card-text small text-gray-400"><span><i>{{students.current_position}}</i></span></h6>
+                            <p class="card-text small text-justify mt-3 text-gray-400">{{students.profile_description}}</p>
+                      </div>
+                 </div>
+            </div>
+        </div>
+        {% else %}
+      <div>
+          <h5 colspan="4" class="small">No data available</h5>
+      </div>
+      {% endif %}
+    </div>
+
+
+
+    <div class="mt-5">
+            <h6 class="">Enrolled course(s)</h6>
+            <div class="card shadow  card-body p-8 " style="background-color:#042339" >
+                <table class="table table-sm" cellspacing="0" cellpadding="0">
+                  <thead>
+                    <tr class="bg-secondary text-white small">
+                       <th scope="col">SN</th>
+                       <th scope="col">Course(s)</th>
+                       <th scope="col">Code</th>
+                       <th scope="col">Date</th>
+                        <th scope="col">Amount paid</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                {% if enrolls %}
+                <tr>
+                      <td colspan="6" class="small">Paid courses</td>
+                  </tr>
+                    {% for enroll,paid in enroll_data %}
+                        <tr class="small">
+                            <td scope="row">{{forloop.counter}}. </td>
+                            <td class="max-lines" scope="row">{{enroll.course_id.course_title}}</td>
+                            <td scope="row">{{enroll.course_id.code}}</td>
+                            <td class="">{{paid.date_created|date:'D d M Y'}}</td>
+                            <td class="">$ {{paid.paid_amount}}</td>
+                            <td>
+                                <a class="btn btn-primary btn-icon-split pull-right" role="button" href="{% url 'teachers:view_student_payment' course_id=paid.course_id.id id=students.id %}">
+                                    <span class="text-white-50 icon small"><i class="fa fa-eye"></i></span>
+                                </a>
+                            </td>
+
+                       </tr>
+                    {% endfor %}
+                {% if enroll_free %}
+                <tr>
+                      <td colspan="6" class="small">Free enrolled courses</td>
+                  </tr>
+                {% for enroll in enroll_free %}
+                <tr class="small">
+                            <td scope="row">{{forloop.counter}}. </td>
+                            <td class="max-lines" scope="row">{{enroll.course_title}}</td>
+                            <td scope="row">{{enroll.code}}</td>
+                            <td class="">{{enroll.date_created|date:'D d M Y'}}</td>
+                            <td class="">$ 0</td>
+                            <td>
+                                <a class="btn btn-primary btn-icon-split pull-right" role="button" href="">
+                                    <span class="text-white-50 icon small"><i class="fa fa-eye"></i></span>
+                                </a>
+                            </td>
+
+                       </tr>
+                {% endfor %}
+                 {% endif %}
+                {% else %}
+                  <tr>
+                      <td colspan="6" class="small">No courses has been enrolled</td>
+                  </tr>
+              {% endif %}
+                <tr class="small">
+                          <td scope="row" colspan="4">Total Amount</td>
+                          <td  scope="row" class="text-warning">$ {{total_paid}}</td>
+                          <td></td>
+                       </tr>
+
+                  </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+</div>
+
+{% endblock content %}

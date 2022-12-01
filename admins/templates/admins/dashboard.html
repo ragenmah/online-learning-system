@@ -48,48 +48,114 @@
                 <div class="card-body p-3 btn-info">
                     <h6>Courses</h6>
                     <hr>
-                    <h6>1</h6>
+                    <h6>{{courses_count}}</h6>
                 </div>
             </div>
         </div>
     </div>
 
-    <h4>Courses</h4>
-    <!-- Start: break 4.0 --><br>
-    <!-- End: break 4.0 -->
-    <!-- Start: Dropdown Card -->
+    <h4>Charts</h4>
+        <br>
+     <div class="row justify-content-left mt-4">
+        <div class="col-lg-6 ">
+            <div class=" shadow mb-4 ">
+                <canvas id="pie-chart"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6 ">
+            <div class=" shadow mb-4">
+                <canvas id="population-chart" ></canvas>
+            </div>
+        </div>
+     </div>
 
-    <div class="card shadow mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="text-primary m-0 font-weight-bold">course name</h6>
-            <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                <div class="dropdown-menu shadow dropdown-menu-right animated--fade-in"><a class="dropdown-item text-danger" href="">Delete Classroom</a></div>
-            </div>
-        </div>
-        <div class="card-body">
-            <p class="m-0">Course code : <br></p>
-            <!-- Start: break 4.0 --><br>
-            <!-- End: break 4.0 -->
-            <div class="row">
-                <div class="col">
-                    <!-- Start: Split Button Primary -->
-                    <a class="btn btn-primary btn-icon-split" role="button" href=""><span
-                            class="text-white-50 icon"><i class="far fa-folder"></i></span><span
-                            class="text-white text">Manage</span>
-                    </a>
-                    <!-- End: Split Button Primary -->
-                </div>
-                <div class="col text-right">
-                    <!-- Start: Split Button Primary --><a class="btn btn-warning btn-icon-split" role="button" href=""><span
-                            class="text-white-50 icon"><i class="far fa-user"></i></span><span
-                            class="text-white text">Students</span></a>
-                    <!-- End: Split Button Primary -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End: Dropdown Card -->
+
 
 </div>
 
 {% endblock content %}
+
+ {% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+ <script>
+
+    var config = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: [
+            '#031F42', '#808080', '#A9A9A9'
+          ],
+          label: "Users"
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    const data = {
+      labels: {{labels|safe}},
+      datasets: [{
+            fill: true,
+            label: '',
+            data: {{ data|safe }},
+            backgroundColor: [
+              '#031F42', '#808080', '#A9A9A9'
+            ],
+            borderColor: [
+               '#808080','#031F42'
+            ],
+            borderWidth: 1
+          }]
+        };
+
+    const config2 = {
+      type: 'bar',
+      data,
+      options: {
+            responsive: true,
+            legend: {
+            display: false
+        },
+             scales: {
+                        xAxes: [{
+                                display: true,
+                                barPercentage: 0.4,
+                                scaleLabel: {
+                                    display: false,
+                                    labelString: 'Users'
+                                }
+                            }],
+                        yAxes: [{
+                                display: true,
+                                ticks: {
+                                    beginAtZero: true,
+                                    steps: 10,
+                                    stepValue: 5,
+
+                                }
+                            }]
+                    },
+                    title: {
+                        display: false,
+                        text: 'Bar Chart - Users'
+                    }
+          }
+    };
+
+
+      window.onload = function() {
+      var ctx = document.getElementById('pie-chart').getContext('2d');
+      var ctx2 = document.getElementById('population-chart').getContext('2d');
+
+      window.myPie = new Chart(ctx, config);
+      window.myPie = new Chart(ctx2, config2);
+    };
+
+  </script>
+
+    {% endblock script %}
