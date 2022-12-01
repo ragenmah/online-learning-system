@@ -109,7 +109,9 @@ def CourseEnrollView(request, id):
 
     print("resource")
     print("resource")
-    print(resource.resource_type)
+    print("resource")
+    print("resource")
+    print(resource[0].resource_type)
 
     if request.method == "POST":
         # try:

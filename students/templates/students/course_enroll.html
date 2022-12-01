@@ -1,6 +1,70 @@
 {% extends 'students/base.html' %} {% block title %}{{courses.course_title}}{% endblock title %} {% block content %}
 {% load static%}
-
+{% block style %}
+<style>
+    .video-container {
+    position: relative;
+    display: flex;
+<!--    width: max-content;-->
+<!--    height: max-content;-->
+ width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+#study-video {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+#study-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+.video-container .controls {
+    position: absolute;
+    bottom: 20px;
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    opacity: 0.2;
+    transition: opacity 0.4s;
+}
+.video-container:hover .controls {
+    opacity: 1;
+}
+.video-container .controls button {
+    background: transparent;
+    color: #fff;
+    font-weight: bolder;
+    text-shadow: 2px 1px 2px #000;
+    border: none;
+    cursor: pointer;
+}
+.video-container .controls .timeline {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-right: 3px solid #ccc;
+    border-left: 3px solid #ccc;
+}
+.video-container .controls .timeline .bar{
+    background: rgb(1, 1, 65);
+    height: 4px;
+    flex: 1;
+}
+.video-container .controls .timeline .bar .inner{
+    background: #ccc;
+    width: 0%;
+    height: 100%;
+}
+.video-container .fa {
+    font-size: 8px !important;
+}
+</style>
+{% endblock style%}
 {% if messages %}
           {% for message in messages %}
             <div class="alert alert-dismissible {{ message.tags }} mt-3">
@@ -15,7 +79,7 @@
 <div class="row justify-content-left mt-4">
     <div class="col-lg-9">
         <div class="card shadow  card-body p-4 " style="background-color:#042339" >
-            <h3 class="pt-2 text-gray-400 "><b>{{courses.course_title}}</b></h3>
+            <h3 class="pt-2 text-gray-400 "><b>{{courses.course_title|capfirst}}</b></h3>
              <div class="d-flex mt-3">
               <p class="card-text text-gray-400 small pr-5">Enrolled: <span class="text-success">{{enrolls_total}}</span></p>
               <p class="card-text text-gray-400 small">Course Duration: <span class="text-success">{{duration.duration_time}}</span></p>
@@ -38,15 +102,23 @@
         {% if resources %}
         {% for resource in resources %}
         <div class="card shadow">
-            <a class="btn btn-link text-left card-header font-weight-bold mt-2" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-4-{{resource.id|slugify}}" href="#collapse-4-{{resource.pk|slugify}}" role="button">{{forloop.counter}}. {{resource.resource_title}}</a>
+            <a class="btn btn-link text-left card-header font-weight-bold mt-2" data-toggle="collapse" aria-expanded="true" aria-controls="collapse-4-{{resource.id|slugify}}" href="#collapse-4-{{resource.pk|slugify}}" role="button">
+
+                <div class="d-flex justify-content-between">
+                    <div>{{forloop.counter}}. {{resource.resource_title}}</div>
+                    <div class="badge btn-danger small">
+                        {{resource.resource_type|upper|capfirst }}
+                    </div>
+                </div>
+            </a>
             <div class="collapse" id="collapse-4-{{resource.pk|slugify}}">
                 <div class="card-body">
                     <h1 style="font-size: 14px;font-weight: bold;" class="text-gray-500">Posted on: {{resource.date_created|date:"M d, Y"}}</h1>
                     <hr>
                     <p class="m-0 text-gray-500">{{resource.resource_description|linebreaksbr}}</p>
                    <br>
-                    {% if  resource.resource_type  %}
-                        {% if resource.resource_type=="pdf"%}
+                    {% if resource.resource_type is not None  %}
+                        {% if resource.resource_type|lower == 'pdf' %}
                          <div class="row">
                             {% if resource.resource %}
                             <div class="col">
@@ -62,24 +134,39 @@
                             <div class="col">
                                <a class="btn btn-success btn-icon-split" role="button" href="{{resource.resource.url}}" download>
                                    <span class="text-white-50 icon">
-                                       <i class="fas fa-arrow-circle-down"></i>
+                                       <i class="fa fa-cloud-download"></i>
                                    </span>
                                    <span class="text-white text">
                                        Download Resource
                                    </span>
                                </a>
+<!--                                <a role="button" href="{{resource.resource.url}}" download><i class="fa fa-cloud-download"></i></a>-->
+
                             </div>
                             {% endif %}
                         </div>
-                        'jpg', 'jpeg', 'png', 'pdf', 'mp4'
-                         {%elif resource.resource_type== 'jpg'
-                            or resource.resource_type== 'jpeg'
-                            or resource.resource_type== 'png'  %}
-                        <img src="{{resource.resource.url}}">
-                        {%else%}
+                         {% elif resource.resource_type|lower == 'jpg' or resource.resource_type|lower == 'jpeg' or  resource.resource_type|lower == 'png'  %}
+                            <img src="{{resource.resource.url}}" alt="resource img" id="study-image">
+                    <a role="button" href="{{resource.resource.url}}" download><i class="fa fa-cloud-download"></i></a>
 
+                        {%elif resource.resource_type|lower == 'mp4'%}
+                            <div class="video-container">
+                                <video onclick="play(event)" src="{{resource.resource.url}}" id="study-video"></video>
+                                <div class="controls">
+                                    <button onclick="play(event)"><i class="fa fa-play"></i><i class="fa fa-pause"></i></button>
+                                    <button onclick="rewind(event)"><i class="fa fa-fast-backward"></i></button>
+                                    <div class="timeline">
+                                        <div class="bar">
+                                            <div class="inner"></div>
+                                        </div>
+                                    </div>
+                                    <button onclick="forward(event)"><i class="fa fa-fast-forward"></i></button>
+                                    <button onclick="fullScreen(event)"><i class="fa fa-expand"></i></button>
+                                    <button onclick="download(event)"><i class="fa fa-cloud-download"></i></button>
+                                </div>
+                            </div>
                         {%endif%}
-                    {%endif%}
+                        {%endif%}
 
                 </div>
             </div>
@@ -145,3 +232,59 @@
 </div>
 
 {% endblock content %}
+
+{% block script %}
+<script>
+    // Select the HTML5 video
+const video = document.querySelector("#study-video")
+// set the pause button to display:none by default
+document.querySelector(".fa-pause").style.display = "none"
+// update the progress bar
+video.addEventListener("timeupdate", () => {
+    let curr = (video.currentTime / video.duration) * 100
+    if(video.ended){
+        document.querySelector(".fa-play").style.display = "block"
+        document.querySelector(".fa-pause").style.display = "none"
+    }
+    document.querySelector('.inner').style.width = `${curr}%`
+})
+// pause or play the video
+const play = (e) => {
+    // Condition when to play a video
+    if(video.paused){
+        document.querySelector(".fa-play").style.display = "none"
+        document.querySelector(".fa-pause").style.display = "block"
+        video.play()
+    }
+    else{
+        document.querySelector(".fa-play").style.display = "block"
+        document.querySelector(".fa-pause").style.display = "none"
+        video.pause()
+    }
+}
+// trigger fullscreen
+const fullScreen = (e) => {
+    e.preventDefault()
+    video.requestFullscreen()
+}
+// download the video
+const download = (e) => {
+    e.preventDefault()
+    let a = document.createElement('a')
+    a.href = video.src
+    a.target = "_blank"
+    a.download = ""
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+}
+// rewind the current time
+const rewind = (e) => {
+    video.currentTime = video.currentTime - ((video.duration/100) * 5)
+}
+// forward the current time
+const forward = (e) => {
+    video.currentTime = video.currentTime + ((video.duration/100) * 5)
+}
+</script>
+{% endblock script %}

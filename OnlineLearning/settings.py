@@ -100,17 +100,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'epiz_33098166_online_learning		',
-#         'USER': 'epiz_33098166',
-#         'PASSWORD': '',
-#         'HOST': 'sql113.epizy.com',
-#         'PORT': '3306',
-#     }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
