@@ -18,18 +18,12 @@
 <h5 class="text-gray-500">We have found <b>{{enroll_count}}</b> of your enrolled courses.</h5>
 <!--<h6  class="text-gray-500">Select the courses to take a test.</h6>-->
     <div class=" d-flex flex-wrap align-items-center mt-4">
-       <div class="row justify-content-left mt-4">
+       <div class="row  mt-4 w-100">
            {% if enrolls %}
            {% for enroll in enrolls %}
-                {% if enroll_count == 1 %}
-                   <div class="col-lg-12 col-sm-3" >
-                {% elif enroll_count == 2 %}
-                    <div class="col-lg-12 col-sm-5">
-                {% else %}
-                   <div class="col-sm-3">
-                {% endif %}
+           <div class="col-lg-3 col-sm-3">
                    <a href="{% url 'students:course_test' courseId=enroll.course_id.id %}">
-                      <div class="card mb-4 " style="height:300px; display:block;">
+                      <div class="card mb-4 " style="height:300px; display:block; ">
                        {% if enroll.course_id.course_thumbnail %}
                           <img class="card-img-top" src="{{ enroll.course_id.course_thumbnail.url }}" height="150" alt="Card image cap">
                        {%else%}
@@ -37,9 +31,8 @@
                        {% endif %}
                         <div class="card-body">
                           <h6 class="card-title text-gray-400  max-lines">{{enroll.course_id.course_title}}</h6>
-                          <p class="card-text text-success small">{{enroll.course_id.user_id.name}}</p>
-                           <b class="text-gray-400 badge btn-primary">{{enroll.course_id.code}}</b>
-
+                          <b class="text-gray-400 badge btn-primary">{{enroll.course_id.code}}</b>
+                          <p class="card-text text-success small mt-2">{{enroll.course_id.user_id.name}}</p>
                         </div>
                      </div>
                    </a>
