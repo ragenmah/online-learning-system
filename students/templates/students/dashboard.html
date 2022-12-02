@@ -58,21 +58,21 @@
     <h6 class="text-gray-400">We have <b>{{course_count}}</b> available courses for you.</h6>
     <div class=" d-flex flex-row overflow-auto flex-nowrap align-items-center mt-4">
 
-     <div class="row  mt-4 ">
+     <div class="row  mt-4 w-100">
          {% if fees %}
          {% for fees in fees %}
                 <div class="col-lg-3 col-sm-3">
-                      <a href="{% url 'students:course_detail' id=fees.course_id.id %}">
-                       <div class="card mb-4 " style="height:320px!important;  background-clip: padding-box;object-fit: cover; ">
+                    <a href="{% url 'students:course_detail' id=fees.course_id.id %}">
+                       <div class="card mb-4 " style="height:320px!important; ">
                            {% if fees.course_id.course_thumbnail %}
                               <img class="card-img-top" src="{{ fees.course_id.course_thumbnail.url }}" height="150" alt="Card image cap">
                            {%else%}
                               <img class="card-img-top" src="https://images.pexels.com/photos/4498366/pexels-photo-4498366.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" height="150" alt="Card image cap">
                            {% endif %}
                             <div class="card-body">
-                              <h6 class="card-title text-gray-400  max-lines">{{fees.course_id.course_title}}</h6>
-                                 <b class="text-gray-400 badge btn-primary">{{fees.course_id.code}}</b>
-                              <p class="card-text text-success small mt-2">{{fees.course_id.user_id.name}}</p>
+                                <h6 class="card-title text-gray-400  max-lines">{{fees.course_id.course_title}}</h6>
+                                <b class="text-gray-400 badge btn-primary">{{fees.course_id.code}}</b>
+                                <p class="card-text text-success small mt-2">{{fees.course_id.user_id.name}}</p>
                                 {% if fees.is_free  %}
                                      <div class="card-title text-warning small"><b>Free</b></div>
                                 {%else%}
