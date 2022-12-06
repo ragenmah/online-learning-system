@@ -9,7 +9,7 @@ urlpatterns = [
     path('profile/edit', views.AccountUpdateView, name='edit_account'),
 
     path('user/update/<int:user_id>', views.UserUpdateView, name='edit_users'),
-    path('user/delete/<int:user_id>', views.UserDeleteView, name='delete_users'),
+    path('user/delete/<int:user_id>/<int:check_user>', views.UserDeleteView, name='delete_users'),
 
     path('change_pass', views.ChangePasswordView, name='change_password'),
 

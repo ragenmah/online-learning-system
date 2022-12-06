@@ -678,8 +678,11 @@ def UserUpdateView(request, user_id):
 
 
 @unauthenticated_user
-def UserDeleteView(request, user_id):
+def UserDeleteView(request, user_id, check_user):
     user = Users.objects.get(id=user_id)
     user.delete()
     messages.success(request, 'Selected user is deleted .')
-    return redirect('admins:student')
+    if check_user == 1:
+        return redirect('admins:student')
+    return redirect('admins:teacher')
+
