@@ -62,7 +62,7 @@
                               <i class="fa fa-edit fa-sm fa-fw mr-2 text-gray-400"></i>
                               &nbsp;Edit Teacher
                           </a>
-                          <a class="dropdown-item" href="{% url 'admins:delete_users' user_id=teacher.id %}">
+                          <a class="dropdown-item" href="{% url 'admins:delete_users' user_id=teacher.id check_user=0%}">
                               <i class="fa fa-trash-o fa-sm fa-fw mr-2 text-gray-400"></i>
                               &nbsp;Delete Teacher
                           </a>
