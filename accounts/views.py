@@ -3,8 +3,8 @@ from django.contrib.auth import login, logout
 from django.views.generic import TemplateView, CreateView, ListView
 
 from accounts.forms import UserForm
-from .models import Roles, Users
-from django.contrib.auth.hashers import make_password, check_password
+from .models import Roles,Users
+from django.contrib.auth.hashers import make_password,check_password
 from django.contrib import messages
 
 
