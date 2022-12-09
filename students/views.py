@@ -107,7 +107,7 @@ def CourseEnrollView(request, id):
     )
 
     if request.method == "POST":
-        # try:
+
             new = Enrolls.objects.filter(course_id=courses, user_id=user)
             payments = FeesPayment.objects.filter(course_id=courses, paid_from=user)
             if new.exists():
@@ -120,8 +120,7 @@ def CourseEnrollView(request, id):
                 feesPayment.save()
                 enrolls.save()
                 messages.success(request, 'You have successfully enrolled this subject.')
-        # except:
-        #     pass
+
     enrolls_total = Enrolls.objects.filter(course_id=id).count()
     return render(request, "students/course_enroll.html", {'courses': courses, 'duration': duration,
                                                            'resources': resource, 'enrolls_total': enrolls_total,
