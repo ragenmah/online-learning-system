@@ -23,7 +23,7 @@
            {% for enroll in enrolls %}
            <div class="col-lg-3 col-sm-3">
                    <a href="{% url 'students:course_test' courseId=enroll.course_id.id %}">
-                      <div class="card mb-4 " style="height:300px; display:block; ">
+                      <div class="card mb-4 " style="height:300px; display:inline-block; ">
                        {% if enroll.course_id.course_thumbnail %}
                           <img class="card-img-top" src="{{ enroll.course_id.course_thumbnail.url }}" height="150" alt="Card image cap">
                        {%else%}
