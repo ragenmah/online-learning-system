@@ -158,7 +158,6 @@ def CourseDeleteView(request, id):
     return redirect('teachers:courses')
 
 
-@unauthenticated_user
 def DurationView(request):
     try:
         users = Users.objects.get(id=request.session['user_id'])
@@ -166,7 +165,7 @@ def DurationView(request):
 
         duration = Duration.objects.all()
 
-        return render(request, 'teachers/duration.html', {'durations': duration, 'courses': courses, 'user': users} )
+        return render(request, 'teachers/duration.html', {'durations': duration, 'courses': courses, 'user': users})
     except Exception as e:
         messages.warning(request, e)
 
