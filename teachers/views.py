@@ -100,34 +100,36 @@ def CourseView(request):
 
 @unauthenticated_user
 def CourseCreateView(request):
-    users = Users.objects.get(id=request.session['user_id'])
+    try:
+        users = Users.objects.get(id=request.session['user_id'])
 
-    if request.method == "POST":
-        form = CourseForm(request.POST, request.FILES, instance=users)
+        if request.method == "POST":
+            form = CourseForm(request.POST, request.FILES, instance=users)
 
-        course = CourseModel(
-            code=request.POST.get('code'),
-            course_title=request.POST.get('course_title'),
-            course_description=request.POST.get('course_description'),
-            user_id=users,
-            course_thumbnail=request.FILES['course_thumbnail']
-        )
+            course = CourseModel(
+                code=request.POST.get('code'),
+                course_title=request.POST.get('course_title'),
+                course_description=request.POST.get('course_description'),
+                user_id=users,
+                course_thumbnail=request.FILES['course_thumbnail']
+            )
 
-        if form.is_valid:
-            try:
-                new = CourseModel.objects.filter(course_title=request.POST.get('course_title'), user_id=users)
-                if new.exists():
-                    messages.error(request, 'The courses already added.')
-                else:
-                    course.save()
+            if form.is_valid:
+                try:
+                    new = CourseModel.objects.filter(course_title=request.POST.get('course_title'), user_id=users)
+                    if new.exists():
+                        messages.error(request, 'The courses already added.')
+                    else:
+                        course.save()
 
-                    messages.success(request, 'Course has been added successfully.')
-                    return redirect('teachers:courses')
-            except:
-                pass
-    form = CourseForm()
-    return render(request, "teachers/add_courses.html", {'form': form, 'user': users})
-
+                        messages.success(request, 'Course has been added successfully.')
+                        return redirect('teachers:courses')
+                except:
+                    pass
+        form = CourseForm()
+        return render(request, "teachers/add_courses.html", {'form': form, 'user': users})
+    except:
+        pass
 
 @unauthenticated_user
 def CourseUpdateView(request, id):
@@ -240,7 +242,6 @@ def DeleteDurationView(request, id):
     return redirect('teachers:duration')
 
 
-@unauthenticated_user
 def FeesView(request):
     try:
         users = Users.objects.get(id=request.session['user_id'])
