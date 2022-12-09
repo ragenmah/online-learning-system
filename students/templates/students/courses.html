@@ -16,12 +16,10 @@
     {% endif %}
 
 <h5 class="text-gray-500">We have found <b>{{enroll_count}}</b> of your enrolled courses.</h5>
-    <div class=" d-flex align-items-center mt-4">
+    <div class=" d-flex flex-wrap align-items-center mt-4">
        <div class="row  mt-4 w-100">
            {% if enrolls %}
            {% for enroll in enrolls %}
-
-
                    <div class="col-lg-3 col-sm-3">
                    <a href="{% url 'students:course_enroll' id=enroll.course_id.id %}">
                     <div class="card mb-4 " style="height:300px; display:inline-block;  ">
