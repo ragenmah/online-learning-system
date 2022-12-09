@@ -160,12 +160,15 @@ def CourseDeleteView(request, id):
 
 @unauthenticated_user
 def DurationView(request):
-    users = Users.objects.get(id=request.session['user_id'])
-    courses = CourseModel.objects.filter(user_id=users)
+    try:
+        users = Users.objects.get(id=request.session['user_id'])
+        courses = CourseModel.objects.filter(user_id=users)
 
-    duration = Duration.objects.all()
+        duration = Duration.objects.all()
 
-    return render(request, 'teachers/duration.html', {'durations': duration, 'courses': courses, 'user': users}, )
+        return render(request, 'teachers/duration.html', {'durations': duration, 'courses': courses, 'user': users}, )
+    except Exception as e:
+        messages.warning(request, e)
 
 
 @unauthenticated_user
@@ -244,14 +247,7 @@ def FeesView(request):
     try:
         users = Users.objects.get(id=request.session['user_id'])
         courses = CourseModel.objects.filter(user_id=users)
-        # course_list = []
-        # fee_list = []
-        # qs = courses.values(*course_list)
         fees = Fees.objects.all()
-        # fs = fees.values(*course_list)
-        # user_ids = CourseModel.objects.filter(user_id=users).exclude(user_id=users).values_list('id', flat=True)
-        # fees = Fees.objects.filter(course_id=user_ids)
-
         fees_data = []
         for elem in courses:
             for v in fees:
@@ -260,7 +256,6 @@ def FeesView(request):
 
         return render(request, 'teachers/fees.html', {'courses': courses, 'fees': fees_data, 'user': users})
     except Exception as e:
-        message = traceback.format_exc()
         messages.warning(request, e)
 
 

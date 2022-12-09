@@ -49,7 +49,7 @@ def TeacherCreateView(request):
                 messages.success(request, 'Welcome ' + name)
                 return redirect('teachers:dashboard')
 
-        return render(request, "accounts/teacher_signup.html",context)
+        return render(request, "accounts/teacher_signup.html", context)
 
 
 def StudentCreateView(request):
