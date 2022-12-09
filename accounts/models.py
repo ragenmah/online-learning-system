@@ -155,7 +155,6 @@ class Enrolls(models.Model):
 
 
 class Fees(models.Model):
-    # course_id = models.ForeignKey('Courses', models.DO_NOTHING, db_column='course_id')
     course_id = models.OneToOneField(Courses, on_delete=models.CASCADE, db_column='course_id', blank=True, null=True)
     price = models.IntegerField(null=True, blank=True)
     discount_percentage = models.IntegerField(blank=True, null=True)
