@@ -152,9 +152,7 @@ def CourseDeleteView(request, id):
 def StudentView(request):
     users = Users.objects.get(id=request.session['user_id'])
     students = Users.objects.filter(user_role_id=roles_std).all()
-
-    # roles = Roles.objects.all()
-    return render(request, "admins/students.html", {'students': students, 'user': users,})
+    return render(request, "admins/students.html", {'students': students, 'user': users})
 
 
 @unauthenticated_user
