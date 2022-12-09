@@ -18,7 +18,6 @@ def check_img(filename):
         Image.open(filename)
         return True
     except IOError:
-        print(filename,'corrupted')
         return False
 
 
@@ -107,12 +106,6 @@ def CourseEnrollView(request, id):
         paid_to=courses.user_id.id,
     )
 
-    print("resource")
-    print("resource")
-    print("resource")
-    print("resource")
-    print(resource[0].resource_type)
-
     if request.method == "POST":
         # try:
             new = Enrolls.objects.filter(course_id=courses, user_id=user)
@@ -188,7 +181,6 @@ def CourseTestView(request, courseId):
         paid_fee = payment[0].paid_amount
 
     if request.method == 'POST':
-        print(request.POST)
         questions = Tests.objects.filter(course_id=courseId)
         score = 0
         wrong = 0
@@ -196,9 +188,6 @@ def CourseTestView(request, courseId):
         total = 0
         for q in questions:
             total += 1
-            print(request.POST.get(q.question))
-            print(q.correct)
-            print()
             if q.correct == request.POST.get(q.question):
                 score += 10
                 correct += 1

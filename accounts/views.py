@@ -42,13 +42,10 @@ def TeacherCreateView(request):
                 messages.error(request, 'The user with this email already exist.')
                 return render(request, "accounts/teacher_signup.html", context)
             else:
-                print("inside else email")
                 user.save()
                 request.session['user_id'] = Users.objects.latest('id').id
                 request.session['roles_std'] = roles_std
                 request.session['roles_teacher'] = roles_teacher
-                print('user_id')
-                print(request.session['user_id'])
                 messages.success(request, 'Welcome ' + name)
                 return redirect('teachers:dashboard')
 
@@ -78,13 +75,11 @@ def StudentCreateView(request):
             messages.error(request, 'The user with this email already exist.')
             return render(request, "accounts/student_signup.html", context)
         else:
-            print("inside else email")
             user.save()
             request.session['user_id'] = Users.objects.latest('id').id
             request.session['roles_std'] = roles_std
             request.session['roles_teacher'] = roles_teacher
-            print('user_id')
-            print(request.session['user_id'])
+
             messages.success(request, 'Welcome ' + name)
             return redirect('students:dashboard')
 
@@ -110,13 +105,11 @@ def SaveUser(roles, request,context,urlName,redirectTo):
         messages.error(request, 'The user with this email already exist.')
         return render(request, urlName, context)
     else:
-        print("inside else email")
         user.save()
         request.session['user_id'] = Users.objects.latest('id').id
         request.session['roles_std'] = roles_std
         request.session['roles_teacher'] = roles_teacher
-        print('user_id')
-        print( request.session['user_id'])
+
         messages.success(request, 'Welcome ' + name)
         return redirect(redirectTo)
 
