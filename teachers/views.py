@@ -15,7 +15,10 @@ from OnlineLearning import settings
 
 @unauthenticated_user
 def DashboardView(request):
-    return render(request, "teachers/dashboard.html", views.AllContextItems(request))
+    try:
+        return render(request, "teachers/dashboard.html", views.AllContextItems(request))
+    except Exception as e:
+        messages.warning(request, e)
 
 
 def getEnrolledStudent(request):
@@ -31,11 +34,15 @@ def getEnrolledStudent(request):
     return students_data
 
 
+
 @unauthenticated_user
 def StudentView(request):
-    user = Users.objects.get(id=request.session['user_id'])
+    try:
+        user = Users.objects.get(id=request.session['user_id'])
 
-    return render(request, 'teachers/students.html', {'students': getEnrolledStudent(request), 'user': user})
+        return render(request, 'teachers/students.html', {'students': getEnrolledStudent(request), 'user': user})
+    except Exception as e:
+        messages.warning(request, e)
 
 
 @unauthenticated_user
