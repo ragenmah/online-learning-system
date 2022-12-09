@@ -166,7 +166,7 @@ def DurationView(request):
 
         duration = Duration.objects.all()
 
-        return render(request, 'teachers/duration.html', {'durations': duration, 'courses': courses, 'user': users}, )
+        return render(request, 'teachers/duration.html', {'durations': duration, 'courses': courses, 'user': users} )
     except Exception as e:
         messages.warning(request, e)
 
@@ -213,7 +213,6 @@ def DurationUpdateView(request,id):
     duration = Duration.objects.get(id=id)
     users = Users.objects.get(id=request.session['user_id'])
     courses = CourseModel.objects.filter(user_id=users)
-
 
     if request.method == "POST":
         duration_time = CheckLength(request.POST.get('hour')) + 'h ' \

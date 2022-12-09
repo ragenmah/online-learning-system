@@ -242,7 +242,7 @@ def DurationView(request):
         for v in duration:
             if v.course_id.id == elem.id:
                 duration_data.append(v)
-    return render(request, 'admins/duration.html', {'durations': duration_data, 'user': users}, )
+    return render(request, 'admins/duration.html', {'durations': duration_data, 'user': users} )
 
 
 @unauthenticated_user
