@@ -120,8 +120,7 @@ def CourseCreateView(request):
                     messages.error(request, 'The courses already added.')
                 else:
                     course.save()
-                    # img_object = form.instance
-                    # print(img_object)
+
                     messages.success(request, 'Course has been added successfully.')
                     return redirect('teachers:courses')
             except:
@@ -163,14 +162,9 @@ def CourseDeleteView(request, id):
 def DurationView(request):
     users = Users.objects.get(id=request.session['user_id'])
     courses = CourseModel.objects.filter(user_id=users)
-    print(users)
-    print(courses)
-    # duration = Duration.objects.filter(course_id=courses)
+
     duration = Duration.objects.all()
-        # Duration.objects.all().select_related('course_id')
-    print(duration.query)
-    print(duration)
-    # print(duration)
+
     return render(request, 'teachers/duration.html', {'durations': duration, 'courses': courses, 'user': users}, )
 
 
@@ -216,11 +210,7 @@ def DurationUpdateView(request,id):
     duration = Duration.objects.get(id=id)
     users = Users.objects.get(id=request.session['user_id'])
     courses = CourseModel.objects.filter(user_id=users)
-    print("duration")
-    print("duration")
-    print(int(str(duration.duration_time)[4:6]))
-    print(int(str(duration.duration_time)[8:10]))
-    print(duration.duration_time)
+
 
     if request.method == "POST":
         duration_time = CheckLength(request.POST.get('hour')) + 'h ' \
@@ -251,23 +241,27 @@ def DeleteDurationView(request, id):
 
 @unauthenticated_user
 def FeesView(request):
-    users = Users.objects.get(id=request.session['user_id'])
-    courses = CourseModel.objects.filter(user_id=users)
-    # course_list = []
-    # fee_list = []
-    # qs = courses.values(*course_list)
-    fees = Fees.objects.all()
-    # fs = fees.values(*course_list)
-    # user_ids = CourseModel.objects.filter(user_id=users).exclude(user_id=users).values_list('id', flat=True)
-    # fees = Fees.objects.filter(course_id=user_ids)
+    try:
+        users = Users.objects.get(id=request.session['user_id'])
+        courses = CourseModel.objects.filter(user_id=users)
+        # course_list = []
+        # fee_list = []
+        # qs = courses.values(*course_list)
+        fees = Fees.objects.all()
+        # fs = fees.values(*course_list)
+        # user_ids = CourseModel.objects.filter(user_id=users).exclude(user_id=users).values_list('id', flat=True)
+        # fees = Fees.objects.filter(course_id=user_ids)
 
-    fees_data = []
-    for elem in courses:
-        for v in fees:
-            if v.course_id.id == elem.id:
-                fees_data.append(v)
-    print(fees_data)
-    return render(request, 'teachers/fees.html', {'courses': courses, 'fees': fees_data, 'user': users})
+        fees_data = []
+        for elem in courses:
+            for v in fees:
+                if v.course_id.id == elem.id:
+                    fees_data.append(v)
+
+        return render(request, 'teachers/fees.html', {'courses': courses, 'fees': fees_data, 'user': users})
+    except Exception as e:
+        message = traceback.format_exc()
+        messages.warning(request, e)
 
 
 @unauthenticated_user
