@@ -150,9 +150,12 @@ def CourseDeleteView(request, id):
 
 # Student
 def StudentView(request):
-    users = Users.objects.get(id=request.session['user_id'])
-    students = Users.objects.filter(user_role_id=roles_std).all()
-    return render(request, "admins/students.html", {'students': students, 'user': users})
+    try:
+        users = Users.objects.get(id=request.session['user_id'])
+        students = Users.objects.filter(user_role_id=roles_std).all()
+        return render(request, "admins/students.html", {'students': students, 'user': users})
+    except Exception as e:
+        messages.warning(request, e)
 
 
 @unauthenticated_user
@@ -319,17 +322,20 @@ def DeleteDurationView(request, id):
 
 @unauthenticated_user
 def FeesView(request):
-    users = Users.objects.get(id=request.session['user_id'])
-    courses = Courses.objects.filter(user_id=users)
-    fees = Fees.objects.all()
-    fees_data = []
+    try:
+        users = Users.objects.get(id=request.session['user_id'])
+        courses = Courses.objects.filter(user_id=users)
+        fees = Fees.objects.all()
+        fees_data = []
 
-    for elem in courses:
-        for v in fees:
-            if v.course_id.id == elem.id:
-                fees_data.append(v)
+        for elem in courses:
+            for v in fees:
+                if v.course_id.id == elem.id:
+                    fees_data.append(v)
 
-    return render(request, 'admins/fees.html', {'courses': courses, 'fees': fees_data, 'user': users})
+        return render(request, 'admins/fees.html', {'courses': courses, 'fees': fees_data, 'user': users})
+    except Exception as e:
+        messages.warning(request, e)
 
 
 @unauthenticated_user
