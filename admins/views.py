@@ -152,7 +152,7 @@ def CourseDeleteView(request, id):
 def StudentView(request):
     users = Users.objects.get(id=request.session['user_id'])
     students = Users.objects.filter(user_role_id=roles_std).all()
-    print(students)
+
     # roles = Roles.objects.all()
     return render(request, "admins/students.html", {'students': students, 'user': users,})
 
@@ -168,14 +168,6 @@ def StudentDetailView(request, id):
     total_paid = 0
     for elem in fees_paid:
         total_paid += elem.paid_amount
-    print("fees_paid")
-    print("fees_paid")
-    print("fees_paid")
-    print(fees_paid)
-    print("fees_paid")
-    print("fees_paid")
-    print("fees_paid")
-    print(enroll_course)
 
     enroll_free = []
     for elem in enroll_course:
@@ -338,7 +330,7 @@ def FeesView(request):
         for v in fees:
             if v.course_id.id == elem.id:
                 fees_data.append(v)
-    print(fees_data)
+
     return render(request, 'admins/fees.html', {'courses': courses, 'fees': fees_data, 'user': users})
 
 
@@ -368,13 +360,7 @@ def FeesCreateView(request):
         discount_percentage = request.POST.get('discount_percentage')
         discount_amount = request.POST.get('discount_amount')
         is_free = request.POST.get('is_free')
-        print("price")
-        print("price")
-        print(request.POST.get('price'))
 
-        print("discount_percentage")
-        print("discount_percentage")
-        print(request.POST.get('is_free'))
         # if discount_percentage is not None:
         if discount_amount == '':
             # discount_amount = str(calculateDiscount(price, discount_percentage))
@@ -473,10 +459,7 @@ def ResourceCourseCreateView(request, courseId):
         courses_instance = Courses.objects.get(id=courseId)
         form = CourseResourceForm(request.POST, request.FILES)
         resource_file = request.FILES['resource']
-        print("resource_file")
-        print("resource_file")
-        print(resource_file)
-        print(resource_file)
+
         if not resource_file:
             messages.error(request, 'Missing resource file')
         try:
@@ -625,7 +608,6 @@ def TestCourseDeleteView(request, id):
 
 def SearchResultView(request):
     user = Users.objects.get(id=request.session['user_id'])
-    print("search_text")
     if request.method == 'POST':
         search_text = request.POST.get('search')
         courses = Courses.objects.filter((Q(course_title__icontains=search_text)
