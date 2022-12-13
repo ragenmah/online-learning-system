@@ -76,8 +76,8 @@
                   </thead>
                   <tbody>
                 {% if enrolls %}
-                <tr>
-                      <td colspan="6" class="small">Paid courses</td>
+                 <tr>
+                      <td colspan="6" class="small btn-success">Paid courses</td>
                   </tr>
                     {% for enroll,paid in enroll_data %}
                         <tr class="small">
@@ -95,8 +95,9 @@
                        </tr>
                     {% endfor %}
                 {% if enroll_free %}
+                {% if enroll_free %}
                 <tr>
-                      <td colspan="6" class="small">Free enrolled courses</td>
+                      <td colspan="6" class="small btn-success">Free enrolled courses</td>
                   </tr>
                 {% for enroll in enroll_free %}
                 <tr class="small">
@@ -113,6 +114,7 @@
 
                        </tr>
                 {% endfor %}
+                {% endif %}
                  {% endif %}
                 {% else %}
                   <tr>

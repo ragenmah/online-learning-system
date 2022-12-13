@@ -437,7 +437,7 @@ def AccountUpdateView(request):
             except:
                 pass
 
-    return render(request, "teachers/edit_account.html", {'form': form,})
+    return render(request, "teachers/edit_account.html", {'form': form, 'user': users})
 
 
 @unauthenticated_user
