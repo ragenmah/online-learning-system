@@ -2,7 +2,7 @@ from django.conf.urls.static import static
 from django.urls import include, path
 from django.conf import settings
 from .views import DashboardView
-from . import  views
+from . import views
 
 app_name = 'teachers'
 

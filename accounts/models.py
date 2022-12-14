@@ -91,7 +91,6 @@ class Courses(models.Model):
     course_description = models.TextField()
     course_thumbnail = models.ImageField(upload_to=filepath, null=True)
     # field_name = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100, )
-
     user_id = models.ForeignKey('Users', on_delete=models.CASCADE, db_column='user_id')
     # course_duration_id = models.ForeignKey('Duration', models.DO_NOTHING, db_column='course_duration_id')
     date_created = models.DateTimeField(auto_now_add=True, null=True)

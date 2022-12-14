@@ -117,7 +117,6 @@ def SaveUser(roles, request,context,urlName,redirectTo):
 def LoginView(request):
     CreateAdmin()
     if request.method == "POST":
-
         try:
             email = request.POST.get('email')
             user = Users.objects.get(email=email)

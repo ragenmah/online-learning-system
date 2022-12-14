@@ -14,19 +14,17 @@
             </div>
          {% endfor %}
     {% endif %}
-
 <h5 class="text-gray-500">We have found <b>{{enroll_count}}</b> of your enrolled courses.</h5>
-    <div class=" d-flex flex-wrap align-items-center mt-4">
-       <div class="row  mt-4 w-100">
+    <div class="  mt-4">
+       <div class="column ">
            {% if enrolls %}
            {% for enroll in enrolls %}
-                   <div class="col-lg-3 col-sm-3">
                    <a href="{% url 'students:course_enroll' id=enroll.course_id.id %}">
-                    <div class="card mb-4 " style="height:300px; display:inline-block;  ">
+                    <div class="card mb-2 d-flex flex-row justify-content-start align-items-start" >
                        {% if enroll.course_id.course_thumbnail %}
-                          <img class="card-img-top" src="{{ enroll.course_id.course_thumbnail.url }}" height="150" alt="Card image cap">
+                          <img class="" src="{{ enroll.course_id.course_thumbnail.url }}" height="150" width="150" alt="Card image cap">
                        {%else%}
-                          <img class="card-img-top" src="https://images.pexels.com/photos/4498366/pexels-photo-4498366.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" height="150" alt="Card image cap">
+                          <img class="" src="https://images.pexels.com/photos/4498366/pexels-photo-4498366.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" height="150" width="150" alt="Card image cap">
                        {% endif %}
                         <div class="card-body">
                             <h6 class="card-title text-gray-400  max-lines">{{enroll.course_id.course_title}}</h6>
@@ -35,7 +33,6 @@
                         </div>
                      </div>
                    </a>
-              </div>
           {% endfor %}
           {% else %}
               <div class="d-flex align-items-center justify-content-center flex-column">
