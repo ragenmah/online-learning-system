@@ -39,11 +39,11 @@ MESSAGE_TAGS = {
 }
 
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_ACCESS_KEY_ID = 'AKIARNZONKRSVEX7SULJ'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'onlinelearningbucket'
-AWS_QUERYSTRING_AUTH = False
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_ACCESS_KEY_ID = 'AKIARNZONKRSVEX7SULJ'
+# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_STORAGE_BUCKET_NAME = 'onlinelearningbucket'
+# AWS_QUERYSTRING_AUTH = False
 
 # Application definition
 
@@ -151,8 +151,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_FILES_DIRS = [BASE_DIR / 'OnlineLearning/learningstatic']
+STATIC_URL = '/staticfiles/'
+STATIC_DIR = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
