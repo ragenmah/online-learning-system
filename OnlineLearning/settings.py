@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v@)n5d*-p=g0nsk)&0x(j9_6-^1&6k0j0676z@pv92v1-_x7ky'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,11 +39,11 @@ MESSAGE_TAGS = {
 }
 
 
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# AWS_ACCESS_KEY_ID = 'AKIARNZONKRSVEX7SULJ'
-# AWS_SECRET_ACCESS_KEY = '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'
-# AWS_STORAGE_BUCKET_NAME = 'onlinelearningbucket'
-# AWS_QUERYSTRING_AUTH = False
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = 'AKIARNZONKRSVEX7SULJ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'onlinelearningbucket'
+AWS_QUERYSTRING_AUTH = False
 
 # Application definition
 
@@ -95,27 +95,27 @@ WSGI_APPLICATION = 'OnlineLearning.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 #
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'online_learning',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-    }
-}
-#
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'online_learning',
-#         'USER': 'admin',
-#         'PASSWORD': 'lpdmbx81',
-#         'HOST': 'online-learning.c0vjnh5kgjym.ap-northeast-1.rds.amazonaws.com',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': '127.0.0.1',
 #         'PORT': '3306',
 #     }
 # }
+# #
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'online_learning',
+        'USER': 'admin',
+        'PASSWORD': 'lpdmbx81',
+        'HOST': 'online-learning.c0vjnh5kgjym.ap-northeast-1.rds.amazonaws.com',
+        'PORT': '3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
