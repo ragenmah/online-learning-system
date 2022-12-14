@@ -1,0 +1,36 @@
+[program:ols_server]
+bind = "127.0.0.1:9000"
+command=/home/ec2-user/online-learning-system/OnlineLearning/deployment/Test_gunicorn_service
+user=ec2-user
+stdout_logfile=/home/ec2-user/online-learning-system/OnlineLearning/logs/Gunicorn_supervisor.log
+redirect_stderr=true
+environment=LANG=en_US.UTF-8,LC_ALL=en_US.UTF-8x
+
+[supervisord]
+logfile=/home/ec2-user/online-learning-system/OnlineLearning/logs/supervisor.log; main log file; default $CWD/supervisord.log
+logfile_maxbytes=5MB        ; max main logfile bytes b4 rotation; default 50MB
+logfile_backups=10           ; # of main logfile backups; 0 means none, default 10
+loglevel=info                ; log level; default info; others: debug,warn,trace
+pidfile=/home/ec2-user/online-learning-system/OnlineLearning/logs/supervisor.pid; supervisord pidfile; default supervisord.pid
+nodaemon=false               ; start in foreground if true; default false
+silent=false                 ; no logs to stdout if true; default false
+minfds=1024                  ; min. avail startup file descriptors; default 1024
+minprocs=200                 ; min. avail process descriptors;default 200
+autorestart=false
+
+[supervisorctl]
+
+[inet_http_server]
+port = 127.0.0.1:9001
+#[unix_http_server]
+#file=../logs/supervisor.sock
+
+
+#[supervisorctl]
+#serverurl=unix:///tmp/supervisor.sock
+
+#[inet_http_server]
+#port=127.0.0.1:8000
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
